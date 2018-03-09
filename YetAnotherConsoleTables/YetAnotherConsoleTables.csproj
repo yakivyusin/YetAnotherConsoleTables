@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Attributes\TableDisplayNameAttribute.cs" />
     <Compile Include="Attributes\TableIgnoreAttribute.cs" />
+    <Compile Include="Model\TableRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

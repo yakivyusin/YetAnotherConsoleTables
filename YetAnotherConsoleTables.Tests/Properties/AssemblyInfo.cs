@@ -1,12 +1,11 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("YetAnotherConsoleTables")]
-[assembly: AssemblyProduct("YetAnotherConsoleTables")]
+[assembly: AssemblyTitle("YetAnotherConsoleTables.Tests")]
+[assembly: AssemblyProduct("YetAnotherConsoleTables.Tests")]
 [assembly: AssemblyCopyright("Copyright © 2018")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -15,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("44909835-2989-4bc2-8fda-8b0b821b11da")]
+[assembly: Guid("e9144718-3998-4deb-bfe7-639b7f17bf2c")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,5 +28,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("YetAnotherConsoleTables.Tests")]
