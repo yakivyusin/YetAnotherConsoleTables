@@ -11,6 +11,7 @@ namespace YetAnotherConsoleTables.Model
     {
         private List<string[]> rowLines = new List<string[]>();
 
+        internal int Length { get; private set; }
         internal IReadOnlyList<string[]> RowLines => rowLines.AsReadOnly();
 
         internal TableRow(string[] row)
@@ -32,6 +33,8 @@ namespace YetAnotherConsoleTables.Model
             {
                 rowLines.Add(splittedLines.Select(x => i >= x.Length ? "" : x[i]).ToArray());
             }
+
+            Length = row.Length;
         }
 
         private string[] SplitString(string input)
