@@ -10,7 +10,7 @@ namespace YetAnotherConsoleTables.Tests
         public void BaseHeadersPropertiesTest()
         {
             var collection = new[] { new PropertiesClass() };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var headers = table.Headers;
 
@@ -23,7 +23,7 @@ namespace YetAnotherConsoleTables.Tests
         public void SublcassPropertiesTest()
         {
             var collection = new[] { new PropertiesSubClass() };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var headers = table.Headers;
 
@@ -37,7 +37,7 @@ namespace YetAnotherConsoleTables.Tests
         public void DisplayNameHeadersTest()
         {
             var collection = new[] { new DisplayNameClass() };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var headers = table.Headers;
 
@@ -51,7 +51,7 @@ namespace YetAnotherConsoleTables.Tests
         public void BaseHeadersFieldsTest()
         {
             var collection = new[] { new FieldsClass() };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var headers = table.Headers;
 
@@ -64,7 +64,7 @@ namespace YetAnotherConsoleTables.Tests
         public void IgnoreTest()
         {
             var collection = new[] { new IgnoreClass() };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var headers = table.Headers;
 
@@ -78,14 +78,14 @@ namespace YetAnotherConsoleTables.Tests
         {
             var collection = new[] { new EmptyClass() };
 
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullCollectionTest()
         {
-            var table = ConsoleTables.From<PropertiesClass>(null);
+            var table = ConsoleTable.From<PropertiesClass>(null);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace YetAnotherConsoleTables.Tests
         {
             var collection = new PropertiesClass[0];
 
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var headers = table.Headers;
 

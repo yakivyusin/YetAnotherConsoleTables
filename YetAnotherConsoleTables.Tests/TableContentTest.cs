@@ -14,7 +14,7 @@ namespace YetAnotherConsoleTables.Tests
                 new PropertiesClass { Property1 = "A", Property2 = 3 },
                 new PropertiesClass { Property1 = "B", Property2 = 4 }
             };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var content = table.Rows;
 
@@ -32,7 +32,7 @@ namespace YetAnotherConsoleTables.Tests
             {
                 null
             };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             var content = table.Rows;
 
@@ -46,7 +46,7 @@ namespace YetAnotherConsoleTables.Tests
             {
                 new PropertiesClass { Property1 = "Property1+", Property2 = 3 }
             };
-            var table = ConsoleTables.From(collection);
+            var table = ConsoleTable.From(collection);
 
             Assert.AreEqual(10, table.ColumnLengths[0]);
         }

@@ -57,6 +57,7 @@
     <Compile Include="TableHeadersTest.cs" />
     <Compile Include="TestClasses.cs" />
     <Compile Include="TableContentTest.cs" />
+    <Compile Include="OutputTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YetAnotherConsoleTables\YetAnotherConsoleTables.csproj">

@@ -8,7 +8,7 @@ using YetAnotherConsoleTables.Model;
 
 namespace YetAnotherConsoleTables
 {
-    public class ConsoleTables
+    public class ConsoleTable
     {
         private List<TableRow> rows = new List<TableRow>();
 
@@ -16,14 +16,14 @@ namespace YetAnotherConsoleTables
         internal TableRow Headers { get; private set; }
         internal IReadOnlyList<TableRow> Rows => rows.AsReadOnly();
 
-        private ConsoleTables(TableRow headers)
+        private ConsoleTable(TableRow headers)
         {
             Headers = headers;
             ColumnLengths = new int[headers.Length];
             CheckColumnLengths(headers);
         }
 
-        public static ConsoleTables From<T>(IEnumerable<T> collection)
+        public static ConsoleTable From<T>(IEnumerable<T> collection)
         {
             if (collection == null)
             {
@@ -38,7 +38,7 @@ namespace YetAnotherConsoleTables
                 throw new InvalidOperationException("Class doesn't contains info.");
             }
 
-            var table = new ConsoleTables(
+            var table = new ConsoleTable(
                 new TableRow(members.Select(x => GetMemberName(x)).ToArray()));
             foreach (var item in collection)
             {
@@ -68,6 +68,16 @@ namespace YetAnotherConsoleTables
                 Attribute.GetCustomAttribute(member, typeof(TableDisplayNameAttribute));
 
             return displayNameAttr == null ? member.Name : displayNameAttr.Name;
+        }
+
+        public void Write()
+        {
+            Write(ConsoleTableFormat.Default);
+        }
+
+        public void Write(ConsoleTableFormat format)
+        {
+            format.Write(this);
         }
 
         private void AddRow(TableRow row)
