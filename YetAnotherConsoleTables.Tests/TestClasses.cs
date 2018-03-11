@@ -5,8 +5,13 @@ namespace YetAnotherConsoleTables.Tests
     class PropertiesClass
     {
         public string Property1 { get; set; }
-        public string Property2 { get; set; }
+        public int Property2 { get; set; }
         private string Property3 { get; set; }
+    }
+    
+    class PropertiesSubClass : PropertiesClass
+    {
+        public string Property4 { get; set; }
     }
 
     class DisplayNameClass

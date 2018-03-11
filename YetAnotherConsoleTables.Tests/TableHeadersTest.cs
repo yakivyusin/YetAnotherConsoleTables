@@ -20,6 +20,20 @@ namespace YetAnotherConsoleTables.Tests
         }
 
         [TestMethod]
+        public void SublcassPropertiesTest()
+        {
+            var collection = new[] { new PropertiesSubClass() };
+            var table = ConsoleTables.From(collection);
+
+            var headers = table.Headers;
+
+            Assert.AreEqual(3, headers.Length);
+            Assert.AreEqual("Property4", headers.RowLines[0][0]);
+            Assert.AreEqual("Property1", headers.RowLines[0][1]);
+            Assert.AreEqual("Property2", headers.RowLines[0][2]);
+        }
+
+        [TestMethod]
         public void DisplayNameHeadersTest()
         {
             var collection = new[] { new DisplayNameClass() };

@@ -10,8 +10,11 @@ namespace YetAnotherConsoleTables
 {
     public class ConsoleTables
     {
+        private List<TableRow> rows = new List<TableRow>();
+
         internal int[] ColumnLengths { get; private set; }
         internal TableRow Headers { get; private set; }
+        internal IReadOnlyList<TableRow> Rows => rows.AsReadOnly();
 
         private ConsoleTables(TableRow headers)
         {
@@ -37,6 +40,14 @@ namespace YetAnotherConsoleTables
 
             var table = new ConsoleTables(
                 new TableRow(members.Select(x => GetMemberName(x)).ToArray()));
+            foreach (var item in collection)
+            {
+                if (item != null)
+                {
+                    var rowItems = members.Select(x => x.GetValue(item)?.ToString()).ToArray();
+                    table.AddRow(new TableRow(rowItems));
+                }
+            }
 
             return table;
         }
@@ -57,6 +68,12 @@ namespace YetAnotherConsoleTables
                 Attribute.GetCustomAttribute(member, typeof(TableDisplayNameAttribute));
 
             return displayNameAttr == null ? member.Name : displayNameAttr.Name;
+        }
+
+        private void AddRow(TableRow row)
+        {
+            rows.Add(row);
+            CheckColumnLengths(row);
         }
 
         private void CheckColumnLengths(TableRow row)
