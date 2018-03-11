@@ -23,6 +23,13 @@ namespace YetAnotherConsoleTables
             CheckColumnLengths(headers);
         }
 
+        /// <summary>
+        /// Creates ConsoleTable object from passed <paramref name="collection"/>.
+        /// </summary>
+        /// <param name="collection">Data to output.</param>
+        /// <returns>Created ConsoleTable object.</returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="collection"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Throws when <typeparamref name="T"/> doesn't contain data to output.</exception>
         public static ConsoleTable From<T>(IEnumerable<T> collection)
         {
             if (collection == null)
@@ -35,7 +42,7 @@ namespace YetAnotherConsoleTables
 
             if (members.Length == 0)
             {
-                throw new InvalidOperationException("Class doesn't contains info.");
+                throw new InvalidOperationException("Class doesn't contain info.");
             }
 
             var table = new ConsoleTable(
@@ -70,11 +77,18 @@ namespace YetAnotherConsoleTables
             return displayNameAttr == null ? member.Name : displayNameAttr.Name;
         }
 
+        /// <summary>
+        /// Writes ConsoleTable to Console using Default format.
+        /// </summary>
         public void Write()
         {
             Write(ConsoleTableFormat.Default);
         }
 
+        /// <summary>
+        /// Writes ConsoleTable to Console using passed <paramref name="format"/>.
+        /// </summary>
+        /// <param name="format">Output format.</param>
         public void Write(ConsoleTableFormat format)
         {
             format.Write(this);

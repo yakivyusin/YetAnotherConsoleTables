@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace YetAnotherConsoleTables
 {
+    /// <summary>
+    /// Represents ConsoleTable output format.
+    /// </summary>
     public class ConsoleTableFormat
     {
         private char columnDelimiter;
