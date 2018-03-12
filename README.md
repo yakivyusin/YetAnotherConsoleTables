@@ -1,4 +1,4 @@
-# YetAnotherConsoleTables
+# YetAnotherConsoleTables [![NuGet](https://img.shields.io/nuget/v/YetAnotherConsoleTables.svg)](https://www.nuget.org/packages/YetAnotherConsoleTables/)
 Advanced library for output your POCO collections in a table view in a console (supports multi-line data, attributes settings, output customization).
 
 # Getting started (basic)
@@ -20,7 +20,7 @@ class Something
 
 class Program
 {
-  var data = Enumerable.Range(0, 5).Select(x => new Something2()).ToList();
+  var data = Enumerable.Range(0, 5).Select(x => new Something()).ToList();
   ConsoleTable.From(data).Write();
 }
 ```
