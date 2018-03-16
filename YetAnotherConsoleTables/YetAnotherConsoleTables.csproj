@@ -44,7 +44,7 @@
     <Compile Include="Attributes\TableDisplayNameAttribute.cs" />
     <Compile Include="Attributes\TableIgnoreAttribute.cs" />
     <Compile Include="ConsoleTableFormat.cs" />
-    <Compile Include="Extensions\MemberInfoExtensions.cs" />
+    <Compile Include="Model\DataValueInfo.cs" />
     <Compile Include="Model\TableRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleTable.cs" />

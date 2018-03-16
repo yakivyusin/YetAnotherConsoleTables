@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using YetAnotherConsoleTables.Attributes;
-using YetAnotherConsoleTables.Extensions;
 using YetAnotherConsoleTables.Model;
 
 namespace YetAnotherConsoleTables
@@ -46,12 +45,12 @@ namespace YetAnotherConsoleTables
             }
 
             var table = new ConsoleTable(
-                new TableRow(members.Select(x => GetMemberName(x)).ToArray()));
+                new TableRow(members.Select(x => x.Name).ToArray()));
             foreach (var item in collection)
             {
                 if (item != null)
                 {
-                    var rowItems = members.Select(x => x.GetValue(item)?.ToString()).ToArray();
+                    var rowItems = members.Select(x => x.GetValue(item)).ToArray();
                     table.AddRow(new TableRow(rowItems));
                 }
             }
@@ -59,22 +58,14 @@ namespace YetAnotherConsoleTables
             return table;
         }
 
-        private static MemberInfo[] GetTypeMembers(Type type)
+        private static DataValueInfo[] GetTypeMembers(Type type)
         {
             var ignoreAttr = typeof(TableIgnoreAttribute);
             return type.GetMembers()
-                .Where(m => (m.MemberType == MemberTypes.Property || m.MemberType == MemberTypes.Field) &&
-                    m.CanRead() &&
-                    !Attribute.IsDefined(m, ignoreAttr))
+                .Where(m => m.MemberType == MemberTypes.Property || m.MemberType == MemberTypes.Field)
+                .Select(m => new DataValueInfo(m))
+                .Where(m => !m.IsIgnored && m.CanRead)
                 .ToArray();
-        }
-
-        private static string GetMemberName(MemberInfo member)
-        {
-            var displayNameAttr = (TableDisplayNameAttribute)
-                Attribute.GetCustomAttribute(member, typeof(TableDisplayNameAttribute));
-
-            return displayNameAttr == null ? member.Name : displayNameAttr.Name;
         }
 
         /// <summary>
