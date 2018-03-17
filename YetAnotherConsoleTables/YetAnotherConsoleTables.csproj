@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\TableMemberConverterAttribute.cs" />
     <Compile Include="Attributes\TableDisplayNameAttribute.cs" />
     <Compile Include="Attributes\TableIgnoreAttribute.cs" />
     <Compile Include="ConsoleTableFormat.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Model\TableRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleTable.cs" />
+    <Compile Include="TableMemberConverter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

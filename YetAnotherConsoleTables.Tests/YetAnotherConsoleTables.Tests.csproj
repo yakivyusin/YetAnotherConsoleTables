@@ -58,6 +58,8 @@
     <Compile Include="TestClasses.cs" />
     <Compile Include="TableContentTest.cs" />
     <Compile Include="OutputTest.cs" />
+    <Compile Include="TestConverters.cs" />
+    <Compile Include="TableMemberConverterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YetAnotherConsoleTables\YetAnotherConsoleTables.csproj">

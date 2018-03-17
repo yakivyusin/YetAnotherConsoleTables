@@ -11,6 +11,7 @@ namespace YetAnotherConsoleTables.Model
 
         private TableIgnoreAttribute ignoreAttr;
         private TableDisplayNameAttribute displayNameAttr;
+        private TableMemberConverter converter;
 
         internal DataValueInfo(MemberInfo member)
         {
@@ -57,11 +58,13 @@ namespace YetAnotherConsoleTables.Model
         {
             if (field != null)
             {
-                return field.GetValue(obj)?.ToString();
+                var value = field.GetValue(obj);
+                return converter == null ? value?.ToString() : converter.Convert(value);
             }
             else
             {
-                return property.GetValue(obj)?.ToString();
+                var value = property.GetValue(obj);
+                return converter == null ? value?.ToString() : converter.Convert(value);
             }
         }
 
@@ -71,6 +74,26 @@ namespace YetAnotherConsoleTables.Model
                 .GetCustomAttribute(member, typeof(TableIgnoreAttribute));
             displayNameAttr = (TableDisplayNameAttribute)Attribute
                 .GetCustomAttribute(member, typeof(TableDisplayNameAttribute));
+            InstantiateConverter((TableMemberConverterAttribute)Attribute
+                .GetCustomAttribute(member, typeof(TableMemberConverterAttribute)));
+        }
+
+        private void InstantiateConverter(TableMemberConverterAttribute attr)
+        {
+            if (attr == null || attr.ConverterType == null)
+            {
+                return;
+            }
+
+            var ctor = attr.ConverterType.GetConstructor(Type.EmptyTypes);
+            if (ctor != null)
+            {
+                var temp = (TableMemberConverter)ctor.Invoke(new object[] { });
+                if (temp.CanConvert(field != null ? field.FieldType : property.PropertyType))
+                {
+                    converter = temp;
+                }
+            }
         }
     }
 }
