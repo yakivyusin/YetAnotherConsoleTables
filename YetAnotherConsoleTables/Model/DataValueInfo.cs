@@ -80,7 +80,8 @@ namespace YetAnotherConsoleTables.Model
 
         private void InstantiateConverter(TableMemberConverterAttribute attr)
         {
-            if (attr == null || attr.ConverterType == null)
+            if (attr == null || attr.ConverterType == null ||
+                !typeof(TableMemberConverter).IsAssignableFrom(attr.ConverterType))
             {
                 return;
             }

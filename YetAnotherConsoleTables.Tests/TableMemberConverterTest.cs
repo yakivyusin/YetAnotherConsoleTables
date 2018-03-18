@@ -94,6 +94,17 @@ namespace YetAnotherConsoleTables.Tests
             Assert.AreEqual("A", row.RowLines[0][0]);
         }
 
+        [TestMethod]
+        public void NoJsonConverterTypeTest()
+        {
+            var data = new[] { new NoJsonConverterTypeObject() };
+            var table = ConsoleTable.From(data);
+
+            var row = table.Rows[0];
+
+            Assert.AreEqual("A", row.RowLines[0][0]);
+        }
+
         private class SuccessObject
         {
             [TableMemberConverter(typeof(BaseIntConverter))]
@@ -139,6 +150,12 @@ namespace YetAnotherConsoleTables.Tests
         private class StaticParamlessObject
         {
             [TableMemberConverter(typeof(StaticParamless))]
+            public string A = "A";
+        }
+
+        private class NoJsonConverterTypeObject
+        {
+            [TableMemberConverter(typeof(StaticParamlessObject))]
             public string A = "A";
         }
     }
