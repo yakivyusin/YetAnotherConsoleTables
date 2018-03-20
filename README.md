@@ -1,6 +1,15 @@
 # YetAnotherConsoleTables [![NuGet](https://img.shields.io/nuget/v/YetAnotherConsoleTables.svg)](https://www.nuget.org/packages/YetAnotherConsoleTables/)
 Advanced library for output your POCO collections in a table view in a console (supports multi-line data, attributes settings, output customization).
 
+**Contents**
+- [Getting Started](#getting-started-basic)
+- [Advanced Features](#advanced-features)
+  - [Attributes](#attributes)
+    - [TableDisplayNameAttribute](#tabledisplaynameattribute)
+    - [TableIgnoreAttribute](#tableignoreattribute)
+  - [Multi-line Data](#multi-line-data)
+  - [Output Customization](#output-customization)
+
 # Getting started (basic)
 Install the package:
 ```
@@ -43,7 +52,10 @@ Output:
 
 # Advanced Features
 ## Attributes
-Library defines `TableDisplayName` and `TableIgnore` attributes for custom columns name setuping and ignoring a property/field respectively.
+### TableDisplayNameAttribute
+Defines custom column name instead of default member name.
+### TableIgnoreAttribute
+Instructs the library to ignore marked public field or property.
 ```
 using YetAnotherConsoleTables.Attributes;
 
