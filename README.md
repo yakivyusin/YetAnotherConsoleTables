@@ -7,6 +7,7 @@ Advanced library for output your POCO collections in a table view in a console (
   - [Attributes](#attributes)
     - [TableDisplayNameAttribute](#tabledisplaynameattribute)
     - [TableIgnoreAttribute](#tableignoreattribute)
+    - [TableMemberConverterAttribute](#tablememberconverterattribute)
   - [Multi-line Data](#multi-line-data)
   - [Output Customization](#output-customization)
 
@@ -56,14 +57,25 @@ Output:
 Defines custom column name instead of default member name.
 ### TableIgnoreAttribute
 Instructs the library to ignore marked public field or property.
+### TableMemberConverterAttribute
+Instructs the library to use the specified `TableMemberConverter` when converting the member to string. You can create own TableMemberConverter by inheriting `TableMemberConverter` or `TableMemberConverter<T>`.
 ```
 using YetAnotherConsoleTables.Attributes;
+
+class MyConverter : TableMemberConverter<int>
+{
+  public override string Convert(int value)
+  {
+    return $"MyConverter:{value}";
+  }
+}
 
 class Something
 {
   private static Random rnd = new Random();
 
   [TableDisplayName("My Integer Property")]
+  [TableMemberConverter(typeof(MyConverter))]
   public int Property1 { get; set; } = rnd.Next(99, 10001);
   [TableIgnore]
   public string Field1 = "My String";
@@ -74,15 +86,15 @@ Output:
 -----------------------
 | My Integer Property |
 -----------------------
-| 4292                |
+| MyConverter:4292    |
 -----------------------
-| 4697                |
+| MyConverter:4697    |
 -----------------------
-| 1672                |
+| MyConverter:1672    |
 -----------------------
-| 6317                |
+| MyConverter:6317    |
 -----------------------
-| 4804                |
+| MyConverter:4804    |
 -----------------------
 ```
 
