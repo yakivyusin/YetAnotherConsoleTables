@@ -13,12 +13,12 @@ namespace YetAnotherConsoleTables
         private char headerDelimiter;
         private char intersection;
 
-        public static ConsoleTableFormat Default = new ConsoleTableFormat('|', '-', '-', '-');
-        public static ConsoleTableFormat Plus = new ConsoleTableFormat('|', '-', '-', '+');
-        public static ConsoleTableFormat Header = new ConsoleTableFormat('|', '-', '=', '|');
+        public static ConsoleTableFormat Default = new ConsoleTableFormat();
+        public static ConsoleTableFormat Plus = new ConsoleTableFormat(intersection: '+');
+        public static ConsoleTableFormat Header = new ConsoleTableFormat(headerDelimiter: '=', intersection: '|');
 
-        public ConsoleTableFormat(char columnDelimiter, char rowDelimiter, char headerDelimiter,
-            char intersection)
+        public ConsoleTableFormat(char columnDelimiter = '|', char rowDelimiter = '-',
+            char headerDelimiter = '-', char intersection = '-')
         {
             this.columnDelimiter = columnDelimiter;
             this.rowDelimiter = rowDelimiter;
