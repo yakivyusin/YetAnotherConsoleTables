@@ -26,11 +26,11 @@ namespace YetAnotherConsoleTables.Tests
 
             Assert.AreEqual(5, writer.Values.Count);
             Assert.IsTrue(writer.Values.All(x => x.Length == 25));
-            Assert.IsTrue(writer.Values[0].All(x => x == '-'));
+            Assert.AreEqual("-------------------------", writer.Values[0]);
             Assert.AreEqual("| Property1 | Property2 |", writer.Values[1]);
-            Assert.IsTrue(writer.Values[2].All(x => x == '-'));
+            Assert.AreEqual("-------------------------", writer.Values[2]);
             Assert.AreEqual("| AA        | 3         |", writer.Values[3]);
-            Assert.IsTrue(writer.Values[4].All(x => x == '-'));
+            Assert.AreEqual("-------------------------", writer.Values[4]);
 
             Console.SetOut(oldConsoleOut);
         }
@@ -81,6 +81,29 @@ namespace YetAnotherConsoleTables.Tests
             Assert.AreEqual("|===========|===========|", writer.Values[2]);
             Assert.AreEqual("| AA        | 3         |", writer.Values[3]);
             Assert.AreEqual("|-----------|-----------|", writer.Values[4]);
+
+            Console.SetOut(oldConsoleOut);
+        }
+
+        [TestMethod]
+        public void FormatWithoitOutsideBordersTest()
+        {
+            var data = new[]
+            {
+                new PropertiesClass { Property1 = "AA", Property2 = 3 }
+            };
+            var table = ConsoleTable.From(data);
+            var writer = new Writer();
+            var oldConsoleOut = Console.Out;
+            Console.SetOut(writer);
+
+            table.Write(new ConsoleTableFormat(outsideBorders: false));
+
+            Assert.AreEqual(3, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 23));
+            Assert.AreEqual(" Property1 | Property2 ", writer.Values[0]);
+            Assert.AreEqual("-----------------------", writer.Values[1]);
+            Assert.AreEqual(" AA        | 3         ", writer.Values[2]);
 
             Console.SetOut(oldConsoleOut);
         }
