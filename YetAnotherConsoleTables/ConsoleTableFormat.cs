@@ -71,7 +71,7 @@ namespace YetAnotherConsoleTables
         private string GetRowContent(string[] content, int[] lengths)
         {
             var joined = string.Join(columnDelimiter.ToString(),
-                content.Select((x, index) => $" {x}{new string(' ', lengths[index] - x.Length + 1)}"));
+                content.Select((x, index) => $" {x}".PadRight(lengths[index] + 2)));
 
             return outsideBorders ? $"{columnDelimiter}{joined}{columnDelimiter}" : joined;
         }
