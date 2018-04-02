@@ -65,6 +65,8 @@ namespace YetAnotherConsoleTables
                 .Where(m => m.MemberType == MemberTypes.Property || m.MemberType == MemberTypes.Field)
                 .Select(m => new DataValueInfo(m))
                 .Where(m => !m.IsIgnored && m.CanRead)
+                .OrderByDescending(m => m.Order.HasValue)
+                .ThenBy(m => m.Order)
                 .ToArray();
         }
 

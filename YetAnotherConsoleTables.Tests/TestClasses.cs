@@ -38,4 +38,14 @@ namespace YetAnotherConsoleTables.Tests
         [TableIgnore]
         public string Property2 { get; set; }
     }
+
+    class OrderedClass
+    {
+        public string Property3 { get; set; }
+        [TableMemberOrder(2)]
+        public string Property2 { get; set; }
+        [TableMemberOrder(1)]
+        public string Property1 { get; set; }
+        public string Property4 { get; set; }
+    }
 }

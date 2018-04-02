@@ -11,6 +11,7 @@ namespace YetAnotherConsoleTables.Model
 
         private TableIgnoreAttribute ignoreAttr;
         private TableDisplayNameAttribute displayNameAttr;
+        private TableMemberOrderAttribute orderAttr;
         private TableMemberConverter converter;
 
         internal DataValueInfo(MemberInfo member)
@@ -34,6 +35,8 @@ namespace YetAnotherConsoleTables.Model
         internal bool IsIgnored => ignoreAttr != null;
 
         internal bool CanRead => field != null ? true : property.CanRead;
+
+        internal int? Order => orderAttr?.Order;
 
         internal string Name
         {
@@ -74,6 +77,8 @@ namespace YetAnotherConsoleTables.Model
                 .GetCustomAttribute(member, typeof(TableIgnoreAttribute));
             displayNameAttr = (TableDisplayNameAttribute)Attribute
                 .GetCustomAttribute(member, typeof(TableDisplayNameAttribute));
+            orderAttr = (TableMemberOrderAttribute)Attribute
+                .GetCustomAttribute(member, typeof(TableMemberOrderAttribute));
             InstantiateConverter((TableMemberConverterAttribute)Attribute
                 .GetCustomAttribute(member, typeof(TableMemberConverterAttribute)));
         }

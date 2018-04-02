@@ -101,5 +101,20 @@ namespace YetAnotherConsoleTables.Tests
             Assert.AreEqual("Property1", headers.RowLines[0][0]);
             Assert.AreEqual("Property2", headers.RowLines[0][1]);
         }
+
+        [TestMethod]
+        public void OrderingTest()
+        {
+            var collection = new[] { new OrderedClass() };
+            var table = ConsoleTable.From(collection);
+
+            var headers = table.Headers;
+
+            Assert.AreEqual(4, headers.Length);
+            Assert.AreEqual("Property1", headers.RowLines[0][0]);
+            Assert.AreEqual("Property2", headers.RowLines[0][1]);
+            Assert.AreEqual("Property3", headers.RowLines[0][2]);
+            Assert.AreEqual("Property4", headers.RowLines[0][3]);
+        }
     }
 }
