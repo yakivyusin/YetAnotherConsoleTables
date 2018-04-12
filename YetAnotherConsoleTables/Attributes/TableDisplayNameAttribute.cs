@@ -17,7 +17,7 @@ namespace YetAnotherConsoleTables.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="TableDisplayNameAttribute"/> with the specified name.
         /// </summary>
-        /// <param name="name">Name of the property of field.</param>
+        /// <param name="name">Name of the property or field.</param>
         public TableDisplayNameAttribute(string name)
         {
             this.name = name;

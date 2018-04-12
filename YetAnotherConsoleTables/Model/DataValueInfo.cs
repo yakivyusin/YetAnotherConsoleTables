@@ -12,6 +12,7 @@ namespace YetAnotherConsoleTables.Model
         private TableIgnoreAttribute ignoreAttr;
         private TableDisplayNameAttribute displayNameAttr;
         private TableMemberOrderAttribute orderAttr;
+        private TableDefaultValueAttribute defaultValueAttr;
         private TableMemberConverter converter;
 
         internal DataValueInfo(MemberInfo member)
@@ -59,15 +60,15 @@ namespace YetAnotherConsoleTables.Model
 
         internal string GetValue(object obj)
         {
-            if (field != null)
+            var value = field != null ? field.GetValue(obj) : property.GetValue(obj);
+
+            if (converter == null)
             {
-                var value = field.GetValue(obj);
-                return converter == null ? value?.ToString() : converter.Convert(value);
+                return value?.ToString() ?? defaultValueAttr?.Value;
             }
             else
             {
-                var value = property.GetValue(obj);
-                return converter == null ? value?.ToString() : converter.Convert(value);
+                return converter.Convert(value) ?? defaultValueAttr?.Value;
             }
         }
 
@@ -79,6 +80,8 @@ namespace YetAnotherConsoleTables.Model
                 .GetCustomAttribute(member, typeof(TableDisplayNameAttribute));
             orderAttr = (TableMemberOrderAttribute)Attribute
                 .GetCustomAttribute(member, typeof(TableMemberOrderAttribute));
+            defaultValueAttr = (TableDefaultValueAttribute)Attribute
+                .GetCustomAttribute(member, typeof(TableDefaultValueAttribute));
             InstantiateConverter((TableMemberConverterAttribute)Attribute
                 .GetCustomAttribute(member, typeof(TableMemberConverterAttribute)));
         }

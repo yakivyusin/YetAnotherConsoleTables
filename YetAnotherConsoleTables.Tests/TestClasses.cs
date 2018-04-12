@@ -48,4 +48,13 @@ namespace YetAnotherConsoleTables.Tests
         public string Property1 { get; set; }
         public string Property4 { get; set; }
     }
+
+    class DefaultValueClass
+    {
+        [TableDefaultValue("2")]
+        public string Property1 { get; set; }
+        public string Property2 { get; set; }
+        [TableDefaultValue(null)]
+        public string Property3 { get; set; }
+    }
 }
