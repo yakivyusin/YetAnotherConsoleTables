@@ -10,7 +10,9 @@ namespace YetAnotherConsoleTables.Attributes
         Inherited = true)]
     public class TableMemberOrderAttribute : Attribute
     {
-        public int? Order { get; private set; }
+        private int order;
+
+        public int Order => order;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableMemberOrderAttribute"/> with the specified order.
@@ -18,7 +20,7 @@ namespace YetAnotherConsoleTables.Attributes
         /// <param name="order">Order of the member in the table.</param>
         public TableMemberOrderAttribute(int order)
         {
-            Order = order;
+            this.order = order;
         }
     }
 }
