@@ -8,6 +8,8 @@ Advanced library for output your POCO collections in a table view in a console (
     - [TableDisplayNameAttribute](#tabledisplaynameattribute)
     - [TableIgnoreAttribute](#tableignoreattribute)
     - [TableMemberConverterAttribute](#tablememberconverterattribute)
+    - [TableMemberOrderAttribute](#tablememberorderattribute)
+    - [TableDefaultValueAttribute](#tabledefaultvalueattribute)
   - [Multi-line Data](#multi-line-data)
   - [Output Customization](#output-customization)
 
@@ -59,6 +61,10 @@ Defines custom column name instead of default member name.
 Instructs the library to ignore marked public field or property.
 ### TableMemberConverterAttribute
 Instructs the library to use the specified `TableMemberConverter` when converting the member to string. You can create own TableMemberConverter by inheriting `TableMemberConverter` or `TableMemberConverter<T>`.
+### TableMemberOrderAttribute
+Sets the order of the member in the table. First, will be output members with this attribute in ascending order, second, other members.
+### TableDefaultValueAttribute
+Defines default string value that will be used if member value is null or your custom converter return null. 
 ```
 using YetAnotherConsoleTables.Attributes;
 
@@ -79,23 +85,26 @@ class Something
   public int Property1 { get; set; } = rnd.Next(99, 10001);
   [TableIgnore]
   public string Field1 = "My String";
+  [TableMemberOrder(1)]
+  [TableDefaultValue("Null Value")]
+  public string Property2 { get; set; } = null;
 }
 ```
 Output:
 ```
------------------------
-| My Integer Property |
------------------------
-| MyConverter:4292    |
------------------------
-| MyConverter:4697    |
------------------------
-| MyConverter:1672    |
------------------------
-| MyConverter:6317    |
------------------------
-| MyConverter:4804    |
------------------------
+------------------------------------
+| Property2  | My Integer Property |
+------------------------------------
+| Null Value | MyConverter:4292    |
+------------------------------------
+| Null Value | MyConverter:4697    |
+------------------------------------
+| Null Value | MyConverter:1672    |
+------------------------------------
+| Null Value | MyConverter:6317    |
+------------------------------------
+| Null Value | MyConverter:4804    |
+------------------------------------
 ```
 
 ## Multi-line Data
@@ -184,22 +193,18 @@ You can customize table view by passing to `Write` method one from three library
 class MyFormat : ConsoleTableFormat
 {
   public MyFormat() : base(columnDelimiter: ':',
-    rowDelimiter: '-',
-    headerDelimiter: '-',
-    intersection: '+')
+    intersection: '+', outsideBorders: false)
   {
 
   }
 }
 ```
 ```
-+-----------+-----------+
-: Property1 : Field1    :
-+-----------+-----------+
-: 461       : My String :
-+-----------+-----------+
-: 7180      : My String :
-+-----------+-----------+
-: 6146      : My String :
-+-----------+-----------+
+ Property1 : Field1    
+-----------+-----------
+ 461       : My String 
+-----------+-----------
+ 7180      : My String 
+-----------+-----------
+ 6146      : My String 
 ```
