@@ -41,10 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\TableDefaultValueAttribute.cs" />
-    <Compile Include="Attributes\TableMemberOrderAttribute.cs" />
+    <Compile Include="Attributes\TableMemberAttribute.cs" />
     <Compile Include="Attributes\TableMemberConverterAttribute.cs" />
-    <Compile Include="Attributes\TableDisplayNameAttribute.cs" />
     <Compile Include="Attributes\TableIgnoreAttribute.cs" />
     <Compile Include="ConsoleTableFormat.cs" />
     <Compile Include="Model\DataValueInfo.cs" />

@@ -10,9 +10,7 @@ namespace YetAnotherConsoleTables.Model
         private PropertyInfo property;
 
         private TableIgnoreAttribute ignoreAttr;
-        private TableDisplayNameAttribute displayNameAttr;
-        private TableMemberOrderAttribute orderAttr;
-        private TableDefaultValueAttribute defaultValueAttr;
+        private TableMemberAttribute memberAttr;
         private TableMemberConverter converter;
 
         internal DataValueInfo(MemberInfo member)
@@ -37,15 +35,15 @@ namespace YetAnotherConsoleTables.Model
 
         internal bool CanRead => field != null ? true : property.CanRead;
 
-        internal int? Order => orderAttr?.Order;
+        internal int? Order => memberAttr?.NullableOrder;
 
         internal string Name
         {
             get
             {
-                if (displayNameAttr != null)
+                if (memberAttr?.DisplayName != null)
                 {
-                    return displayNameAttr.Name;
+                    return memberAttr.DisplayName;
                 }
                 else if (field != null)
                 {
@@ -64,11 +62,11 @@ namespace YetAnotherConsoleTables.Model
 
             if (converter == null)
             {
-                return value?.ToString() ?? defaultValueAttr?.Value;
+                return value?.ToString() ?? memberAttr?.DefaultValue;
             }
             else
             {
-                return converter.Convert(value) ?? defaultValueAttr?.Value;
+                return converter.Convert(value) ?? memberAttr?.DefaultValue;
             }
         }
 
@@ -76,12 +74,8 @@ namespace YetAnotherConsoleTables.Model
         {
             ignoreAttr = (TableIgnoreAttribute)Attribute
                 .GetCustomAttribute(member, typeof(TableIgnoreAttribute));
-            displayNameAttr = (TableDisplayNameAttribute)Attribute
-                .GetCustomAttribute(member, typeof(TableDisplayNameAttribute));
-            orderAttr = (TableMemberOrderAttribute)Attribute
-                .GetCustomAttribute(member, typeof(TableMemberOrderAttribute));
-            defaultValueAttr = (TableDefaultValueAttribute)Attribute
-                .GetCustomAttribute(member, typeof(TableDefaultValueAttribute));
+            memberAttr = (TableMemberAttribute)Attribute
+                .GetCustomAttribute(member, typeof(TableMemberAttribute));
             InstantiateConverter((TableMemberConverterAttribute)Attribute
                 .GetCustomAttribute(member, typeof(TableMemberConverterAttribute)));
         }

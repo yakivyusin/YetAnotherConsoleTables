@@ -16,9 +16,9 @@ namespace YetAnotherConsoleTables.Tests
 
     class DisplayNameClass
     {
-        [TableDisplayName("Property 1")]
+        [TableMember(DisplayName = "Property 1")]
         public string Property1 { get; set; }
-        [TableDisplayName("Property\r\n2")]
+        [TableMember(DisplayName = "Property\r\n2")]
         public string Property2 { get; set; }
     }
 
@@ -42,19 +42,19 @@ namespace YetAnotherConsoleTables.Tests
     class OrderedClass
     {
         public string Property3 { get; set; }
-        [TableMemberOrder(2)]
+        [TableMember(Order = 2)]
         public string Property2 { get; set; }
-        [TableMemberOrder(1)]
+        [TableMember(Order = 1)]
         public string Property1 { get; set; }
         public string Property4 { get; set; }
     }
 
     class DefaultValueClass
     {
-        [TableDefaultValue("2")]
+        [TableMember(DefaultValue = "2")]
         public string Property1 { get; set; }
         public string Property2 { get; set; }
-        [TableDefaultValue(null)]
+        [TableMember(DefaultValue = null)]
         public string Property3 { get; set; }
     }
 }
