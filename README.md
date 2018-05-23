@@ -5,11 +5,9 @@ Advanced library for output your POCO collections in a table view in a console (
 - [Getting Started](#getting-started-basic)
 - [Advanced Features](#advanced-features)
   - [Attributes](#attributes)
-    - [TableDisplayNameAttribute](#tabledisplaynameattribute)
+    - [TableMemberAttribute](#tablememberattribute)
     - [TableIgnoreAttribute](#tableignoreattribute)
     - [TableMemberConverterAttribute](#tablememberconverterattribute)
-    - [TableMemberOrderAttribute](#tablememberorderattribute)
-    - [TableDefaultValueAttribute](#tabledefaultvalueattribute)
   - [Multi-line Data](#multi-line-data)
   - [Output Customization](#output-customization)
 
@@ -55,16 +53,12 @@ Output:
 
 # Advanced Features
 ## Attributes
-### TableDisplayNameAttribute
-Defines custom column name instead of default member name.
+### TableMemberAttribute
+Sets properties of the table member, such as display name, default value and order.
 ### TableIgnoreAttribute
 Instructs the library to ignore marked public field or property.
 ### TableMemberConverterAttribute
 Instructs the library to use the specified `TableMemberConverter` when converting the member to string. You can create own TableMemberConverter by inheriting `TableMemberConverter` or `TableMemberConverter<T>`.
-### TableMemberOrderAttribute
-Sets the order of the member in the table. First, will be output members with this attribute in ascending order, second, other members.
-### TableDefaultValueAttribute
-Defines default string value that will be used if member value is null or your custom converter return null. 
 ```
 using YetAnotherConsoleTables.Attributes;
 
@@ -80,13 +74,12 @@ class Something
 {
   private static Random rnd = new Random();
 
-  [TableDisplayName("My Integer Property")]
+  [TableMember(DisplayName = "My Integer Property")]
   [TableMemberConverter(typeof(MyConverter))]
   public int Property1 { get; set; } = rnd.Next(99, 10001);
   [TableIgnore]
   public string Field1 = "My String";
-  [TableMemberOrder(1)]
-  [TableDefaultValue("Null Value")]
+  [TableMember(Order = 1, DefaultValue = "Null Value")]
   public string Property2 { get; set; } = null;
 }
 ```
