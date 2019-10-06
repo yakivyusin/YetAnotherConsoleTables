@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Linq;
 
 namespace YetAnotherConsoleTables
@@ -28,7 +28,7 @@ namespace YetAnotherConsoleTables
             this.outsideBorders = outsideBorders;
         }
 
-        internal void Write(ConsoleTable table)
+        internal void Write(ConsoleTable table, TextWriter writer)
         {
             var header = table.Headers;
 
@@ -38,24 +38,24 @@ namespace YetAnotherConsoleTables
 
             if (outsideBorders)
             {
-                Console.WriteLine(headerDelimString);
+                writer.WriteLine(headerDelimString);
             }
             foreach (var headerLine in header.RowLines)
             {
-                Console.WriteLine(GetRowContent(headerLine, table.ColumnLengths));
+                writer.WriteLine(GetRowContent(headerLine, table.ColumnLengths));
             }
-            Console.WriteLine(headerDelimString);
+            writer.WriteLine(headerDelimString);
 
             var lastRow = table.Rows.LastOrDefault();
             foreach (var row in table.Rows)
             {
                 foreach (var rowLine in row.RowLines)
                 {
-                    Console.WriteLine(GetRowContent(rowLine, table.ColumnLengths));
+                    writer.WriteLine(GetRowContent(rowLine, table.ColumnLengths));
                 }
                 if (outsideBorders || !ReferenceEquals(row, lastRow))
                 {
-                    Console.WriteLine(rowDelimString);
+                    writer.WriteLine(rowDelimString);
                 }
             }
         }

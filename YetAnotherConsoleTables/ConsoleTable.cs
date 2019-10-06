@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using YetAnotherConsoleTables.Attributes;
@@ -75,7 +76,16 @@ namespace YetAnotherConsoleTables
         /// </summary>
         public void Write()
         {
-            Write(ConsoleTableFormat.Default);
+            Write(ConsoleTableFormat.Default, Console.Out);
+        }
+
+        /// <summary>
+        /// Writes ConsoleTable to passed <paramref name="destination"/> using Default format.
+        /// </summary>
+        /// <param name="destination">Destination.</param>
+        public void Write(TextWriter destination)
+        {
+            Write(ConsoleTableFormat.Default, destination);
         }
 
         /// <summary>
@@ -84,7 +94,17 @@ namespace YetAnotherConsoleTables
         /// <param name="format">Output format.</param>
         public void Write(ConsoleTableFormat format)
         {
-            format.Write(this);
+            Write(format, Console.Out);
+        }
+
+        /// <summary>
+        /// Writes ConsoleTable to passed <paramref name="destination"/> using passed <paramref name="format"/>.
+        /// </summary>
+        /// <param name="format">Output format.</param>
+        /// <param name="destination">Destination.</param>
+        public void Write(ConsoleTableFormat format, TextWriter destination)
+        {
+            format.Write(this, destination);
         }
 
         private void AddRow(TableRow row)
