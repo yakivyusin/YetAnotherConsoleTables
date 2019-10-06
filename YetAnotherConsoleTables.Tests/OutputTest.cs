@@ -10,8 +10,33 @@ namespace YetAnotherConsoleTables.Tests
     [TestClass]
     public class OutputTest
     {
+        private TextWriter consoleStdOut;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            consoleStdOut = Console.Out;
+        }
+
+        [TestCleanup]
+        public void Teardown()
+        {
+            Console.SetOut(consoleStdOut);
+        }
+
         [TestMethod]
-        public void DefaultFormatTest()
+        public void DefaultFormatToConsoleTest()
+        {
+            DefaultFormatTest(true);
+        }
+
+        [TestMethod]
+        public void DefaultFormatToWriterTest()
+        {
+            DefaultFormatTest(false);
+        }
+
+        public void DefaultFormatTest(bool wrapAsConsole)
         {
             var data = new[]
             {
@@ -19,10 +44,16 @@ namespace YetAnotherConsoleTables.Tests
             };
             var table = ConsoleTable.From(data);
             var writer = new Writer();
-            var oldConsoleOut = Console.Out;
-            Console.SetOut(writer);
 
-            table.Write();
+            if (wrapAsConsole)
+            {
+                Console.SetOut(writer);
+                table.Write();
+            }
+            else
+            {
+                table.Write(writer);
+            }
 
             Assert.AreEqual(5, writer.Values.Count);
             Assert.IsTrue(writer.Values.All(x => x.Length == 25));
@@ -31,8 +62,6 @@ namespace YetAnotherConsoleTables.Tests
             Assert.AreEqual("-------------------------", writer.Values[2]);
             Assert.AreEqual("| AA        | 3         |", writer.Values[3]);
             Assert.AreEqual("-------------------------", writer.Values[4]);
-
-            Console.SetOut(oldConsoleOut);
         }
 
         [TestMethod]
@@ -44,7 +73,6 @@ namespace YetAnotherConsoleTables.Tests
             };
             var table = ConsoleTable.From(data);
             var writer = new Writer();
-            var oldConsoleOut = Console.Out;
             Console.SetOut(writer);
 
             table.Write(ConsoleTableFormat.Plus);
@@ -56,8 +84,6 @@ namespace YetAnotherConsoleTables.Tests
             Assert.AreEqual("+-----------+-----------+", writer.Values[2]);
             Assert.AreEqual("| AA        | 3         |", writer.Values[3]);
             Assert.AreEqual("+-----------+-----------+", writer.Values[4]);
-
-            Console.SetOut(oldConsoleOut);
         }
 
         [TestMethod]
@@ -69,7 +95,6 @@ namespace YetAnotherConsoleTables.Tests
             };
             var table = ConsoleTable.From(data);
             var writer = new Writer();
-            var oldConsoleOut = Console.Out;
             Console.SetOut(writer);
 
             table.Write(ConsoleTableFormat.Header);
@@ -81,8 +106,6 @@ namespace YetAnotherConsoleTables.Tests
             Assert.AreEqual("|===========|===========|", writer.Values[2]);
             Assert.AreEqual("| AA        | 3         |", writer.Values[3]);
             Assert.AreEqual("|-----------|-----------|", writer.Values[4]);
-
-            Console.SetOut(oldConsoleOut);
         }
 
         [TestMethod]
@@ -94,7 +117,6 @@ namespace YetAnotherConsoleTables.Tests
             };
             var table = ConsoleTable.From(data);
             var writer = new Writer();
-            var oldConsoleOut = Console.Out;
             Console.SetOut(writer);
 
             table.Write(new ConsoleTableFormat(outsideBorders: false));
@@ -104,8 +126,6 @@ namespace YetAnotherConsoleTables.Tests
             Assert.AreEqual(" Property1 | Property2 ", writer.Values[0]);
             Assert.AreEqual("-----------------------", writer.Values[1]);
             Assert.AreEqual(" AA        | 3         ", writer.Values[2]);
-
-            Console.SetOut(oldConsoleOut);
         }
 
         private class Writer : TextWriter
