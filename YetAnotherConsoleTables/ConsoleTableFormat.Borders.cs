@@ -7,6 +7,9 @@ namespace YetAnotherConsoleTables
     /// </summary>
     public partial class ConsoleTableFormat
     {
+        /// <summary>
+        /// Flags to setup table borders output.
+        /// </summary>
         [Flags]
         public enum Borders
         {
