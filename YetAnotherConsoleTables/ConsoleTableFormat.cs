@@ -17,6 +17,8 @@ namespace YetAnotherConsoleTables
         public static ConsoleTableFormat Default = new ConsoleTableFormat();
         public static ConsoleTableFormat Plus = new ConsoleTableFormat(intersection: '+');
         public static ConsoleTableFormat Header = new ConsoleTableFormat(headerDelimiter: '=', intersection: '|');
+        public static ConsoleTableFormat GithubMarkdown = new ConsoleTableFormat(intersection: '|',
+            borders: Borders.Left | Borders.Right | Borders.HeaderDelimiter);
 
         public ConsoleTableFormat(char columnDelimiter = '|', char rowDelimiter = '-',
             char headerDelimiter = '-', char intersection = '-', Borders borders = Borders.All)

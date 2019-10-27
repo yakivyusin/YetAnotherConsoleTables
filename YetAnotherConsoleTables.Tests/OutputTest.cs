@@ -109,6 +109,26 @@ namespace YetAnotherConsoleTables.Tests
         }
 
         [TestMethod]
+        public void GithubMarkdownFormatTest()
+        {
+            var data = new[]
+            {
+                new PropertiesClass { Property1 = "AA", Property2 = 3 }
+            };
+            var table = ConsoleTable.From(data);
+            var writer = new Writer();
+            Console.SetOut(writer);
+
+            table.Write(ConsoleTableFormat.GithubMarkdown);
+
+            Assert.AreEqual(3, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 25));
+            Assert.AreEqual("| Property1 | Property2 |", writer.Values[0]);
+            Assert.AreEqual("|-----------|-----------|", writer.Values[1]);
+            Assert.AreEqual("| AA        | 3         |", writer.Values[2]);
+        }
+
+        [TestMethod]
         public void FormatWithoitOutsideBordersTest()
         {
             var data = new[]
