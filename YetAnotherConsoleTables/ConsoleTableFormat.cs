@@ -8,11 +8,11 @@ namespace YetAnotherConsoleTables
     /// </summary>
     public class ConsoleTableFormat
     {
-        private char columnDelimiter;
-        private char rowDelimiter;
-        private char headerDelimiter;
-        private char intersection;
-        private bool outsideBorders;
+        private readonly char columnDelimiter;
+        private readonly char rowDelimiter;
+        private readonly char headerDelimiter;
+        private readonly char intersection;
+        private readonly bool outsideBorders;
 
         public static ConsoleTableFormat Default = new ConsoleTableFormat();
         public static ConsoleTableFormat Plus = new ConsoleTableFormat(intersection: '+');
@@ -30,29 +30,39 @@ namespace YetAnotherConsoleTables
 
         internal void Write(ConsoleTable table, TextWriter writer)
         {
-            var header = table.Headers;
+            WriteTableHeader(table, writer);
+            WriteTableContent(table, writer);
+        }
 
-            var rowDelimString = GetRowDelimString(table.ColumnLengths, rowDelimiter);
-            var headerDelimString = rowDelimiter == headerDelimiter ?
-                rowDelimString : GetRowDelimString(table.ColumnLengths, headerDelimiter);
+        private void WriteTableHeader(ConsoleTable table, TextWriter writer)
+        {
+            var headerDelimString = GetRowDelimString(table.ColumnLengths, headerDelimiter);
 
             if (outsideBorders)
             {
                 writer.WriteLine(headerDelimString);
             }
-            foreach (var headerLine in header.RowLines)
+
+            foreach (var headerLine in table.Headers.RowLines)
             {
                 writer.WriteLine(GetRowContent(headerLine, table.ColumnLengths));
             }
-            writer.WriteLine(headerDelimString);
 
+            writer.WriteLine(headerDelimString);
+        }
+
+        private void WriteTableContent(ConsoleTable table, TextWriter writer)
+        {
+            var rowDelimString = GetRowDelimString(table.ColumnLengths, rowDelimiter);
             var lastRow = table.Rows.LastOrDefault();
+
             foreach (var row in table.Rows)
             {
                 foreach (var rowLine in row.RowLines)
                 {
                     writer.WriteLine(GetRowContent(rowLine, table.ColumnLengths));
                 }
+
                 if (outsideBorders || !ReferenceEquals(row, lastRow))
                 {
                     writer.WriteLine(rowDelimString);
