@@ -6,26 +6,26 @@ namespace YetAnotherConsoleTables
     /// <summary>
     /// Represents ConsoleTable output format.
     /// </summary>
-    public class ConsoleTableFormat
+    public partial class ConsoleTableFormat
     {
-        private readonly char columnDelimiter;
         private readonly char rowDelimiter;
         private readonly char headerDelimiter;
-        private readonly char intersection;
-        private readonly bool outsideBorders;
+        private readonly string columnDelimiter;
+        private readonly string intersection;
+        private readonly Borders borders;
 
         public static ConsoleTableFormat Default = new ConsoleTableFormat();
         public static ConsoleTableFormat Plus = new ConsoleTableFormat(intersection: '+');
         public static ConsoleTableFormat Header = new ConsoleTableFormat(headerDelimiter: '=', intersection: '|');
 
         public ConsoleTableFormat(char columnDelimiter = '|', char rowDelimiter = '-',
-            char headerDelimiter = '-', char intersection = '-', bool outsideBorders = true)
+            char headerDelimiter = '-', char intersection = '-', Borders borders = Borders.All)
         {
-            this.columnDelimiter = columnDelimiter;
+            this.columnDelimiter = columnDelimiter.ToString();
             this.rowDelimiter = rowDelimiter;
             this.headerDelimiter = headerDelimiter;
-            this.intersection = intersection;
-            this.outsideBorders = outsideBorders;
+            this.intersection = intersection.ToString();
+            this.borders = borders;
         }
 
         internal void Write(ConsoleTable table, TextWriter writer)
@@ -38,7 +38,7 @@ namespace YetAnotherConsoleTables
         {
             var headerDelimString = GetRowDelimString(table.ColumnLengths, headerDelimiter);
 
-            if (outsideBorders)
+            if (borders.HasFlag(Borders.Top))
             {
                 writer.WriteLine(headerDelimString);
             }
@@ -48,12 +48,16 @@ namespace YetAnotherConsoleTables
                 writer.WriteLine(GetRowContent(headerLine, table.ColumnLengths));
             }
 
-            writer.WriteLine(headerDelimString);
+            if (borders.HasFlag(Borders.HeaderDelimiter))
+            {
+                writer.WriteLine(headerDelimString);
+            }
         }
 
         private void WriteTableContent(ConsoleTable table, TextWriter writer)
         {
             var rowDelimString = GetRowDelimString(table.ColumnLengths, rowDelimiter);
+            var hasRowDelimString = borders.HasFlag(Borders.RowDelimiter);
             var lastRow = table.Rows.LastOrDefault();
 
             foreach (var row in table.Rows)
@@ -63,7 +67,8 @@ namespace YetAnotherConsoleTables
                     writer.WriteLine(GetRowContent(rowLine, table.ColumnLengths));
                 }
 
-                if (outsideBorders || !ReferenceEquals(row, lastRow))
+                if (borders.HasFlag(Borders.Bottom) ||
+                    (!ReferenceEquals(row, lastRow) && hasRowDelimString))
                 {
                     writer.WriteLine(rowDelimString);
                 }
@@ -74,16 +79,20 @@ namespace YetAnotherConsoleTables
         {
             var joined = string.Join(intersection.ToString(),
                 lengths.Select(x => new string(symbol, x + 2)));
+            var leftBorder = borders.HasFlag(Borders.Left) ? intersection : string.Empty;
+            var rightBorder = borders.HasFlag(Borders.Right) ? intersection : string.Empty;
 
-            return outsideBorders ? $"{intersection}{joined}{intersection}" : joined;
+            return $"{leftBorder}{joined}{rightBorder}";
         }
 
         private string GetRowContent(string[] content, int[] lengths)
         {
             var joined = string.Join(columnDelimiter.ToString(),
                 content.Select((x, index) => $" {x}".PadRight(lengths[index] + 2)));
+            var leftBorder = borders.HasFlag(Borders.Left) ? columnDelimiter : string.Empty;
+            var rightBorder = borders.HasFlag(Borders.Right) ? columnDelimiter : string.Empty;
 
-            return outsideBorders ? $"{columnDelimiter}{joined}{columnDelimiter}" : joined;
+            return $"{leftBorder}{joined}{rightBorder}";
         }
     }
 }

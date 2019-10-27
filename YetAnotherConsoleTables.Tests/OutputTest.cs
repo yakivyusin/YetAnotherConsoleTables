@@ -119,7 +119,7 @@ namespace YetAnotherConsoleTables.Tests
             var writer = new Writer();
             Console.SetOut(writer);
 
-            table.Write(new ConsoleTableFormat(outsideBorders: false));
+            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.HeaderDelimiter | ConsoleTableFormat.Borders.RowDelimiter));
 
             Assert.AreEqual(3, writer.Values.Count);
             Assert.IsTrue(writer.Values.All(x => x.Length == 23));
