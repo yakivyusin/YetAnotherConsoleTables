@@ -129,7 +129,7 @@ namespace YetAnotherConsoleTables.Tests
         }
 
         [TestMethod]
-        public void FormatWithoitOutsideBordersTest()
+        public void FormatWithoutLeftBorderTest()
         {
             var data = new[]
             {
@@ -139,14 +139,126 @@ namespace YetAnotherConsoleTables.Tests
             var writer = new Writer();
             Console.SetOut(writer);
 
-            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.HeaderDelimiter | ConsoleTableFormat.Borders.RowDelimiter));
+            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.All & ~ConsoleTableFormat.Borders.Left));
 
-            Assert.AreEqual(3, writer.Values.Count);
-            Assert.IsTrue(writer.Values.All(x => x.Length == 23));
-            Assert.AreEqual(" Property1 | Property2 ", writer.Values[0]);
-            Assert.AreEqual("-----------------------", writer.Values[1]);
-            Assert.AreEqual(" AA        | 3         ", writer.Values[2]);
+            Assert.AreEqual(5, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 24));
+            Assert.AreEqual("------------------------", writer.Values[0]);
+            Assert.AreEqual(" Property1 | Property2 |", writer.Values[1]);
+            Assert.AreEqual("------------------------", writer.Values[2]);
+            Assert.AreEqual(" AA        | 3         |", writer.Values[3]);
+            Assert.AreEqual("------------------------", writer.Values[4]);
         }
+
+        [TestMethod]
+        public void FormatWithoutRightBorderTest()
+        {
+            var data = new[]
+            {
+                new PropertiesClass { Property1 = "AA", Property2 = 3 }
+            };
+            var table = ConsoleTable.From(data);
+            var writer = new Writer();
+            Console.SetOut(writer);
+
+            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.All & ~ConsoleTableFormat.Borders.Right));
+
+            Assert.AreEqual(5, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 24));
+            Assert.AreEqual("------------------------", writer.Values[0]);
+            Assert.AreEqual("| Property1 | Property2 ", writer.Values[1]);
+            Assert.AreEqual("------------------------", writer.Values[2]);
+            Assert.AreEqual("| AA        | 3         ", writer.Values[3]);
+            Assert.AreEqual("------------------------", writer.Values[4]);
+        }
+
+        [TestMethod]
+        public void FormatWithoutTopBorderTest()
+        {
+            var data = new[]
+            {
+                new PropertiesClass { Property1 = "AA", Property2 = 3 }
+            };
+            var table = ConsoleTable.From(data);
+            var writer = new Writer();
+            Console.SetOut(writer);
+
+            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.All & ~ConsoleTableFormat.Borders.Top));
+
+            Assert.AreEqual(4, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 25));
+            Assert.AreEqual("| Property1 | Property2 |", writer.Values[0]);
+            Assert.AreEqual("-------------------------", writer.Values[1]);
+            Assert.AreEqual("| AA        | 3         |", writer.Values[2]);
+            Assert.AreEqual("-------------------------", writer.Values[3]);
+        }
+
+        [TestMethod]
+        public void FormatWithoutBottomBorderTest()
+        {
+            var data = new[]
+            {
+                new PropertiesClass { Property1 = "AA", Property2 = 3 }
+            };
+            var table = ConsoleTable.From(data);
+            var writer = new Writer();
+            Console.SetOut(writer);
+
+            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.All & ~ConsoleTableFormat.Borders.Bottom));
+
+            Assert.AreEqual(4, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 25));
+            Assert.AreEqual("-------------------------", writer.Values[0]);
+            Assert.AreEqual("| Property1 | Property2 |", writer.Values[1]);
+            Assert.AreEqual("-------------------------", writer.Values[2]);
+            Assert.AreEqual("| AA        | 3         |", writer.Values[3]);
+        }
+
+        [TestMethod]
+        public void FormatWithoutHeaderBorderTest()
+        {
+            var data = new[]
+            {
+                new PropertiesClass { Property1 = "AA", Property2 = 3 }
+            };
+            var table = ConsoleTable.From(data);
+            var writer = new Writer();
+            Console.SetOut(writer);
+
+            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.All & ~ConsoleTableFormat.Borders.HeaderDelimiter));
+
+            Assert.AreEqual(4, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 25));
+            Assert.AreEqual("-------------------------", writer.Values[0]);
+            Assert.AreEqual("| Property1 | Property2 |", writer.Values[1]);
+            Assert.AreEqual("| AA        | 3         |", writer.Values[2]);
+            Assert.AreEqual("-------------------------", writer.Values[3]);
+        }
+
+        [TestMethod]
+        public void FormatWithoutRowBorderTest()
+        {
+            var data = new[]
+            {
+                new PropertiesClass { Property1 = "AA", Property2 = 3 },
+                new PropertiesClass { Property1 = "AA", Property2 = 3 }
+            };
+            var table = ConsoleTable.From(data);
+            var writer = new Writer();
+            Console.SetOut(writer);
+
+            table.Write(new ConsoleTableFormat(borders: ConsoleTableFormat.Borders.All & ~ConsoleTableFormat.Borders.RowDelimiter));
+
+            Assert.AreEqual(6, writer.Values.Count);
+            Assert.IsTrue(writer.Values.All(x => x.Length == 25));
+            Assert.AreEqual("-------------------------", writer.Values[0]);
+            Assert.AreEqual("| Property1 | Property2 |", writer.Values[1]);
+            Assert.AreEqual("-------------------------", writer.Values[2]);
+            Assert.AreEqual("| AA        | 3         |", writer.Values[3]);
+            Assert.AreEqual("| AA        | 3         |", writer.Values[4]);
+            Assert.AreEqual("-------------------------", writer.Values[5]);
+        }
+
 
         private class Writer : TextWriter
         {
