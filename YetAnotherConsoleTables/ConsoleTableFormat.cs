@@ -69,8 +69,9 @@ namespace YetAnotherConsoleTables
                     writer.WriteLine(GetRowContent(rowLine, table.ColumnLengths));
                 }
 
-                if (borders.HasFlag(Borders.Bottom) ||
-                    (!ReferenceEquals(row, lastRow) && hasRowDelimString))
+                var isLastRow = ReferenceEquals(row, lastRow);
+                if ((borders.HasFlag(Borders.Bottom) && isLastRow) ||
+                    (hasRowDelimString && !isLastRow))
                 {
                     writer.WriteLine(rowDelimString);
                 }
