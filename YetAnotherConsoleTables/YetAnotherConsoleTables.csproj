@@ -7,6 +7,9 @@
     <Copyright>Copyright 2018</Copyright>
     <PackageProjectUrl>https://github.com/yakivyusin/YetAnotherConsoleTables</PackageProjectUrl>
     <PackageTags>console table</PackageTags>
+    <PackageReleaseNotes>- [Breaking change] Boolean 'outsideBorders' parameter of ConsoleTableFormat constructor is changed to ConsoleTableFormat.Borders bit flags. See project site wiki for details about migration to new version;
+- Added GithubMarkdown built-in ConsoleTableFormat;
+- Added Write() Overloads with TextWriter parameter.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
