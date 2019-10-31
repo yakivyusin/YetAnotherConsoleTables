@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <Version>3.0.0</Version>
+    <Authors>yakivyusin</Authors>
+    <Description>Prints your POCO collections in the table view in a console. Supports multi-line data, attributes settings, output customization.</Description>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageProjectUrl>https://github.com/yakivyusin/YetAnotherConsoleTables</PackageProjectUrl>
+    <PackageTags>console table</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
