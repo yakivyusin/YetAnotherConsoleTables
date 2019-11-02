@@ -186,7 +186,7 @@ You can customize table view by passing to `Write` method one from three library
 class MyFormat : ConsoleTableFormat
 {
   public MyFormat() : base(columnDelimiter: ':',
-    intersection: '+', outsideBorders: false)
+    intersection: '+', borders: ConsoleTableFormat.Borders.HeaderDelimiter | ConsoleTableFormat.Borders.RowDelimiter)
   {
 
   }
