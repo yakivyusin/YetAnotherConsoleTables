@@ -37,7 +37,7 @@ namespace YetAnotherConsoleTables
                 throw new ArgumentNullException("collection");
             }
 
-            var type = typeof(T);
+            var type = GetElementType(collection.GetType());
             var members = GetTypeMembers(type);
 
             if (members.Length == 0)
@@ -57,6 +57,29 @@ namespace YetAnotherConsoleTables
             }
 
             return table;
+        }
+
+        private static Type GetElementType(Type collectionType)
+        {
+            if (collectionType.IsArray)
+            {
+                return collectionType.GetElementType();
+            }
+
+            // type is IEnumerable<T>;
+            if (collectionType.IsGenericType &&
+                collectionType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
+                return collectionType.GetGenericArguments()[0];
+            }
+
+            // type implements/extends IEnumerable<T>;
+            var enumType = collectionType.GetInterfaces()
+                                    .Where(t => t.IsGenericType &&
+                                           t.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                                    .Select(t => t.GenericTypeArguments[0]).FirstOrDefault();
+
+            return enumType ?? collectionType;
         }
 
         private static DataValueInfo[] GetTypeMembers(Type type)
