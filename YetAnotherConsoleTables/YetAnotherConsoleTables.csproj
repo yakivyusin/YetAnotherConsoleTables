@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461;net5.0</TargetFrameworks>
-    <Version>3.0.1-alpha</Version>
+    <Version>3.0.1</Version>
     <Authors>yakivyusin</Authors>
     <Description>Prints your POCO collections in the table view in a console. Supports multi-line data, attributes settings, output customization.</Description>
     <Copyright>Copyright 2018</Copyright>
     <PackageProjectUrl>https://github.com/yakivyusin/YetAnotherConsoleTables</PackageProjectUrl>
     <PackageTags>console table</PackageTags>
-    <PackageReleaseNotes>- Fixed type of collection element detection</PackageReleaseNotes>
+    <PackageReleaseNotes>- Fixed type of collection element detection
+- .NET 5.0 as target framework</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
