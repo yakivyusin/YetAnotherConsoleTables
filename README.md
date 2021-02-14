@@ -143,7 +143,7 @@ Output:
 ```
 
 ## Output Customization
-You can customize table view by passing to `Write` method one from three library styles or by passing your own `ConsoleTableFormat` object (or it subclass).
+You can customize table view by passing to `Write` method one from four library styles or by passing your own `ConsoleTableFormat` object (or it subclass).
 
 **Default Style**: `Write()` or `Write(ConsoleTableFormat.Default)`
 ```
@@ -180,6 +180,14 @@ You can customize table view by passing to `Write` method one from three library
 |-----------|-----------|
 | 4051      | My String |
 |-----------|-----------|
+```
+**Github Markdown**: `Write(ConsoleTableFormat.GithubMarkdown)`
+```
+| Property1 | Property2 |
+|-----------|-----------|
+| AA        | 30        |
+| AB        | 35        |
+| BB        | 40        |
 ```
 **Defined Custom Style**
 ```
