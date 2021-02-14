@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net5.0</TargetFrameworks>
     <Version>3.0.1-alpha</Version>
     <Authors>yakivyusin</Authors>
     <Description>Prints your POCO collections in the table view in a console. Supports multi-line data, attributes settings, output customization.</Description>
