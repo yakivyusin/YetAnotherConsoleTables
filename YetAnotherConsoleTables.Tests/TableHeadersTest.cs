@@ -14,7 +14,7 @@ namespace YetAnotherConsoleTables.Tests
 
             var headers = table.Headers;
 
-            Assert.AreEqual(2, headers.Length);
+            Assert.AreEqual(2, headers.ColumnCount);
             Assert.AreEqual("Property1", headers.RowLines[0][0]);
             Assert.AreEqual("Property2", headers.RowLines[0][1]);
         }
@@ -27,7 +27,7 @@ namespace YetAnotherConsoleTables.Tests
 
             var headers = table.Headers;
 
-            Assert.AreEqual(3, headers.Length);
+            Assert.AreEqual(3, headers.ColumnCount);
             Assert.AreEqual("Property4", headers.RowLines[0][0]);
             Assert.AreEqual("Property1", headers.RowLines[0][1]);
             Assert.AreEqual("Property2", headers.RowLines[0][2]);
@@ -41,7 +41,7 @@ namespace YetAnotherConsoleTables.Tests
 
             var headers = table.Headers;
 
-            Assert.AreEqual(2, headers.Length);
+            Assert.AreEqual(2, headers.ColumnCount);
             Assert.AreEqual("Property 1", headers.RowLines[0][0]);
             Assert.AreEqual("Property", headers.RowLines[0][1]);
             Assert.AreEqual("2", headers.RowLines[1][1]);
@@ -55,7 +55,7 @@ namespace YetAnotherConsoleTables.Tests
 
             var headers = table.Headers;
 
-            Assert.AreEqual(2, headers.Length);
+            Assert.AreEqual(2, headers.ColumnCount);
             Assert.AreEqual("Field1", headers.RowLines[0][0]);
             Assert.AreEqual("Field2", headers.RowLines[0][1]);
         }
@@ -68,7 +68,7 @@ namespace YetAnotherConsoleTables.Tests
 
             var headers = table.Headers;
 
-            Assert.AreEqual(1, headers.Length);
+            Assert.AreEqual(1, headers.ColumnCount);
             Assert.AreEqual("Property1", headers.RowLines[0][0]);
         }
 
@@ -97,7 +97,7 @@ namespace YetAnotherConsoleTables.Tests
 
             var headers = table.Headers;
 
-            Assert.AreEqual(2, headers.Length);
+            Assert.AreEqual(2, headers.ColumnCount);
             Assert.AreEqual("Property1", headers.RowLines[0][0]);
             Assert.AreEqual("Property2", headers.RowLines[0][1]);
         }
@@ -110,7 +110,7 @@ namespace YetAnotherConsoleTables.Tests
 
             var headers = table.Headers;
 
-            Assert.AreEqual(4, headers.Length);
+            Assert.AreEqual(4, headers.ColumnCount);
             Assert.AreEqual("Property1", headers.RowLines[0][0]);
             Assert.AreEqual("Property2", headers.RowLines[0][1]);
             Assert.AreEqual("Property3", headers.RowLines[0][2]);

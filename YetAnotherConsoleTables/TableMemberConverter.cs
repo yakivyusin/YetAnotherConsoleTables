@@ -4,7 +4,7 @@ namespace YetAnotherConsoleTables
 {
     /// <summary>
     /// Converts an object to string.
-    /// It class must have public parameterless constructor.
+    /// This class must have public parameterless constructor.
     /// </summary>
     public abstract class TableMemberConverter
     {
@@ -56,14 +56,8 @@ namespace YetAnotherConsoleTables
         /// <returns>
         /// 	<c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public sealed override bool CanConvert(Type objectType)
-        {
-            return typeof(T).IsAssignableFrom(objectType);
-        }
+        public sealed override bool CanConvert(Type objectType) => typeof(T).IsAssignableFrom(objectType);
 
-        private bool IsNullable(Type type)
-        {
-            return type.IsValueType ? (Nullable.GetUnderlyingType(type) != null) : true;
-        }
+        private bool IsNullable(Type type) => !type.IsValueType || Nullable.GetUnderlyingType(type) != null;
     }
 }
