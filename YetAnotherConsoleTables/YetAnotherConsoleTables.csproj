@@ -10,6 +10,7 @@
     <PackageReleaseNotes>- Fixed type of collection element detection
 - .NET 5.0 as target framework</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
