@@ -35,7 +35,9 @@ namespace YetAnotherConsoleTables.Model
 
         internal bool CanRead => _field != null || _property.CanRead;
 
-        internal int? Order => _memberAttr?.NullableOrder;
+        internal int Order => _memberAttr?.Order ?? default;
+
+        internal bool IsOrderSpecified => _memberAttr?.IsOrderSpecified ?? false;
 
         internal string Name => _memberAttr?.DisplayName ?? _field?.Name ?? _property.Name;
 
