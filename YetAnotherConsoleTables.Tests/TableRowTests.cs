@@ -10,41 +10,53 @@ namespace YetAnotherConsoleTables.Tests
         [Fact]
         public void BaseParsingTest()
         {
-            var rowContent = new[] { "Column 1", "Column 2", "Column 3" };
+            var rowContent = new[]
+            {
+                ("Column 1", 0),
+                ("Column 2", 0),
+                ("Column 3", 0)
+            };
             var row = new TableRow(rowContent);
 
             var parsedLines = row.RowLines;
 
             Assert.Equal(1, parsedLines.Count);
-            Assert.True(rowContent.SequenceEqual(parsedLines[0]));
+            Assert.Equal(rowContent.Select(x => x.Item1), parsedLines[0]);
         }
 
         [Fact]
         public void MultilineParsingTest()
         {
-            var rowContent = new[] { $"{Environment.NewLine}Column 1",
-                $"Column 2{Environment.NewLine}Column 2",
-                $"Column 3{Environment.NewLine}" };
+            var rowContent = new[]
+            {
+                ($"{Environment.NewLine}Column 1", 0),
+                ($"Column 2{Environment.NewLine}Column 2", 0),
+                ($"Column 3{Environment.NewLine}", 0)
+            };
             var row = new TableRow(rowContent);
 
             var parsedLines = row.RowLines;
 
             Assert.Equal(2, parsedLines.Count);
-            Assert.True((new[] { "", "Column 2", "Column 3" }).SequenceEqual(parsedLines[0]));
-            Assert.True((new[] { "Column 1", "Column 2", "" }).SequenceEqual(parsedLines[1]));
+            Assert.Equal(new[] { "", "Column 2", "Column 3" }, parsedLines[0]);
+            Assert.Equal(new[] { "Column 1", "Column 2", "" }, parsedLines[1]);
         }
 
         [Fact]
         public void MultilineJaggedParsingTest()
         {
-            var rowContent = new[] { $"{Environment.NewLine}Column 1", "Column 2" };
+            var rowContent = new[]
+            {
+                ($"{Environment.NewLine}Column 1", 0),
+                ("Column 2", 0)
+            };
             var row = new TableRow(rowContent);
 
             var parsedLines = row.RowLines;
 
             Assert.Equal(2, parsedLines.Count);
-            Assert.True((new[] { "", "Column 2" }).SequenceEqual(parsedLines[0]));
-            Assert.True((new[] { "Column 1", "" }).SequenceEqual(parsedLines[1]));
+            Assert.Equal(new[] { "", "Column 2" }, parsedLines[0]);
+            Assert.Equal(new[] { "Column 1", "" }, parsedLines[1]);
         }
 
         [Fact]
@@ -60,13 +72,17 @@ namespace YetAnotherConsoleTables.Tests
         [Fact]
         public void NullColumnParsingTest()
         {
-            var rowContent = new[] { "Column 1", null };
+            var rowContent = new[]
+            {
+                ("Column 1", 0),
+                (null, 0)
+            };
             var row = new TableRow(rowContent);
 
             var parsedLines = row.RowLines;
 
             Assert.Equal(1, parsedLines.Count);
-            Assert.True(rowContent.Select(x => x != null ? x : "").SequenceEqual(parsedLines[0]));
+            Assert.Equal(rowContent.Select(x => x.Item1).Select(x => x != null ? x : ""), parsedLines[0]);
         }
     }
 }
