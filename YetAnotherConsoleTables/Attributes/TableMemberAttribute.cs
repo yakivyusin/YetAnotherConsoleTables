@@ -34,5 +34,11 @@ namespace YetAnotherConsoleTables.Attributes
                 IsOrderSpecified = true;
             }
         }
+
+        /// <summary>
+        /// Instructs the library about the minimal width for this member.
+        /// <para>If the lengths of all values for this member are less than the set value, they will be padded to this value.</para> 
+        /// </summary>
+        public int MinWidth { get; set; }
     }
 }

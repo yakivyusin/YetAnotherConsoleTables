@@ -41,6 +41,8 @@ namespace YetAnotherConsoleTables.Model
 
         internal string Name => _memberAttr?.DisplayName ?? _field?.Name ?? _property.Name;
 
+        internal int MinWidth => _memberAttr?.MinWidth ?? default;
+
         internal string GetValue(object obj)
         {
             var value = _field != null ? _field.GetValue(obj) : _property.GetValue(obj);
