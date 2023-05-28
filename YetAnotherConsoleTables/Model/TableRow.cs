@@ -9,10 +9,10 @@ namespace YetAnotherConsoleTables.Model
     /// </summary>
     internal class TableRow
     {
-        private List<string[]> rowLines = new List<string[]>();
+        private readonly List<string[]> _rowLines = new List<string[]>();
 
-        internal int Length { get; private set; }
-        internal IReadOnlyList<string[]> RowLines => rowLines.AsReadOnly();
+        internal int ColumnCount { get; private set; }
+        internal IReadOnlyList<string[]> RowLines => _rowLines.AsReadOnly();
 
         internal TableRow(string[] row)
         {
@@ -31,17 +31,17 @@ namespace YetAnotherConsoleTables.Model
 
             for (int i = 0; i < linesCount; i++)
             {
-                rowLines.Add(splittedLines.Select(x => i >= x.Length ? "" : x[i]).ToArray());
+                _rowLines.Add(splittedLines.Select(x => i >= x.Length ? string.Empty : x[i]).ToArray());
             }
 
-            Length = row.Length;
+            ColumnCount = row.Length;
         }
 
         private string[] SplitString(string input)
         {
             if (input == null)
             {
-                return new[] { "" };
+                return new[] { string.Empty };
             }
 
             return input.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);

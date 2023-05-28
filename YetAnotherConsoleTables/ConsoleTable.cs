@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using YetAnotherConsoleTables.Attributes;
 using YetAnotherConsoleTables.Model;
 
 namespace YetAnotherConsoleTables
 {
     public class ConsoleTable
     {
-        private List<TableRow> rows = new List<TableRow>();
+        private readonly List<TableRow> _rows = new List<TableRow>();
 
-        internal int[] ColumnLengths { get; private set; }
-        internal TableRow Headers { get; private set; }
-        internal IReadOnlyList<TableRow> Rows => rows.AsReadOnly();
+        internal int[] ColumnLengths { get; }
+        internal TableRow Headers { get; }
+        internal IReadOnlyList<TableRow> Rows => _rows.AsReadOnly();
 
         private ConsoleTable(TableRow headers)
         {
             Headers = headers;
-            ColumnLengths = new int[headers.Length];
-            CheckColumnLengths(headers);
+            ColumnLengths = new int[headers.ColumnCount];
+            UpdateColumnLengths(headers);
         }
 
         /// <summary>
@@ -45,8 +44,8 @@ namespace YetAnotherConsoleTables
                 throw new InvalidOperationException("Class doesn't contain info.");
             }
 
-            var table = new ConsoleTable(
-                new TableRow(members.Select(x => x.Name).ToArray()));
+            var table = new ConsoleTable(new TableRow(members.Select(x => x.Name).ToArray()));
+
             foreach (var item in collection)
             {
                 if (item != null)
@@ -74,22 +73,23 @@ namespace YetAnotherConsoleTables
             }
 
             // type implements/extends IEnumerable<T>;
-            var enumType = collectionType.GetInterfaces()
-                                    .Where(t => t.IsGenericType &&
-                                           t.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                                    .Select(t => t.GenericTypeArguments[0]).FirstOrDefault();
+            var enumType = collectionType
+                .GetInterfaces()
+                .Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .Select(t => t.GenericTypeArguments[0])
+                .FirstOrDefault();
 
             return enumType ?? collectionType;
         }
 
         private static DataValueInfo[] GetTypeMembers(Type type)
         {
-            var ignoreAttr = typeof(TableIgnoreAttribute);
-            return type.GetMembers()
+            return type
+                .GetMembers()
                 .Where(m => m.MemberType == MemberTypes.Property || m.MemberType == MemberTypes.Field)
                 .Select(m => new DataValueInfo(m))
                 .Where(m => !m.IsIgnored && m.CanRead)
-                .OrderByDescending(m => m.Order.HasValue)
+                .OrderByDescending(m => m.IsOrderSpecified)
                 .ThenBy(m => m.Order)
                 .ToArray();
         }
@@ -132,15 +132,15 @@ namespace YetAnotherConsoleTables
 
         private void AddRow(TableRow row)
         {
-            rows.Add(row);
-            CheckColumnLengths(row);
+            _rows.Add(row);
+            UpdateColumnLengths(row);
         }
 
-        private void CheckColumnLengths(TableRow row)
+        private void UpdateColumnLengths(TableRow row)
         {
             foreach (var line in row.RowLines)
             {
-                for (int i = 0; i < row.Length; i++)
+                for (int i = 0; i < row.ColumnCount; i++)
                 {
                     if (line[i].Length > ColumnLengths[i])
                     {

@@ -6,83 +6,60 @@ namespace YetAnotherConsoleTables.Model
 {
     internal class DataValueInfo
     {
-        private FieldInfo field;
-        private PropertyInfo property;
+        private readonly FieldInfo _field;
+        private readonly PropertyInfo _property;
 
-        private TableIgnoreAttribute ignoreAttr;
-        private TableMemberAttribute memberAttr;
-        private TableMemberConverter converter;
+        private TableIgnoreAttribute _ignoreAttr;
+        private TableMemberAttribute _memberAttr;
+        private TableMemberConverter _converter;
 
         internal DataValueInfo(MemberInfo member)
         {
             if (member.MemberType == MemberTypes.Field)
             {
-                field = member as FieldInfo;
-                ReadAttributes(member);
+                _field = member as FieldInfo;
             }
             else if (member.MemberType == MemberTypes.Property)
             {
-                property = member as PropertyInfo;
-                ReadAttributes(member);
+                _property = member as PropertyInfo;
             }
             else
             {
-                throw new Exception("Member must be of type FieldInfo or PropertyInfo");
+                throw new ArgumentOutOfRangeException("Member must be of type FieldInfo or PropertyInfo");
             }
+
+            ReadAttributes(member);
         }
 
-        internal bool IsIgnored => ignoreAttr != null;
+        internal bool IsIgnored => _ignoreAttr != null;
 
-        internal bool CanRead => field != null ? true : property.CanRead;
+        internal bool CanRead => _field != null || _property.CanRead;
 
-        internal int? Order => memberAttr?.NullableOrder;
+        internal int Order => _memberAttr?.Order ?? default;
 
-        internal string Name
-        {
-            get
-            {
-                if (memberAttr?.DisplayName != null)
-                {
-                    return memberAttr.DisplayName;
-                }
-                else if (field != null)
-                {
-                    return field.Name;
-                }
-                else
-                {
-                    return property.Name;
-                }
-            }
-        }
+        internal bool IsOrderSpecified => _memberAttr?.IsOrderSpecified ?? false;
+
+        internal string Name => _memberAttr?.DisplayName ?? _field?.Name ?? _property.Name;
 
         internal string GetValue(object obj)
         {
-            var value = field != null ? field.GetValue(obj) : property.GetValue(obj);
+            var value = _field != null ? _field.GetValue(obj) : _property.GetValue(obj);
 
-            if (converter == null)
-            {
-                return value?.ToString() ?? memberAttr?.DefaultValue;
-            }
-            else
-            {
-                return converter.Convert(value) ?? memberAttr?.DefaultValue;
-            }
+            return (_converter != null ? _converter.Convert(value) : value?.ToString()) ?? _memberAttr?.DefaultValue;
         }
 
         private void ReadAttributes(MemberInfo member)
         {
-            ignoreAttr = (TableIgnoreAttribute)Attribute
-                .GetCustomAttribute(member, typeof(TableIgnoreAttribute));
-            memberAttr = (TableMemberAttribute)Attribute
-                .GetCustomAttribute(member, typeof(TableMemberAttribute));
-            InstantiateConverter((TableMemberConverterAttribute)Attribute
-                .GetCustomAttribute(member, typeof(TableMemberConverterAttribute)));
+            _ignoreAttr = (TableIgnoreAttribute)Attribute.GetCustomAttribute(member, typeof(TableIgnoreAttribute));
+            _memberAttr = (TableMemberAttribute)Attribute.GetCustomAttribute(member, typeof(TableMemberAttribute));
+            
+            InstantiateConverter((TableMemberConverterAttribute)Attribute.GetCustomAttribute(member, typeof(TableMemberConverterAttribute)));
         }
 
         private void InstantiateConverter(TableMemberConverterAttribute attr)
         {
-            if (attr == null || attr.ConverterType == null ||
+            if (attr == null ||
+                attr.ConverterType == null ||
                 !typeof(TableMemberConverter).IsAssignableFrom(attr.ConverterType))
             {
                 return;
@@ -91,10 +68,10 @@ namespace YetAnotherConsoleTables.Model
             var ctor = attr.ConverterType.GetConstructor(Type.EmptyTypes);
             if (ctor != null)
             {
-                var temp = (TableMemberConverter)ctor.Invoke(new object[] { });
-                if (temp.CanConvert(field != null ? field.FieldType : property.PropertyType))
+                var converter = (TableMemberConverter)ctor.Invoke(Array.Empty<object>());
+                if (converter.CanConvert(_field != null ? _field.FieldType : _property.PropertyType))
                 {
-                    converter = temp;
+                    _converter = converter;
                 }
             }
         }
