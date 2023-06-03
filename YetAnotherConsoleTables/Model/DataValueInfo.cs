@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using YetAnotherConsoleTables.Attributes;
 
@@ -67,10 +68,10 @@ namespace YetAnotherConsoleTables.Model
                 return;
             }
 
-            var ctor = attr.ConverterType.GetConstructor(Type.EmptyTypes);
+            var ctor = attr.ConverterType.GetConstructor(attr.ConstructorParams.Select(x => x.GetType()).ToArray());
             if (ctor != null)
             {
-                var converter = (TableMemberConverter)ctor.Invoke(Array.Empty<object>());
+                var converter = (TableMemberConverter)ctor.Invoke(attr.ConstructorParams);
                 if (converter.CanConvert(_field != null ? _field.FieldType : _property.PropertyType))
                 {
                     _converter = converter;
