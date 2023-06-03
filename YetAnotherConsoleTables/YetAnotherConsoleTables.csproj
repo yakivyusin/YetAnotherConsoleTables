@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461;net5.0;net6.0;net7.0</TargetFrameworks>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <Authors>yakivyusin</Authors>
     <Description>Prints your POCO collections in the table view in a console. Supports multi-line data, attributes settings, output customization.</Description>
     <Copyright>Copyright 2018</Copyright>
     <PackageProjectUrl>https://github.com/yakivyusin/YetAnotherConsoleTables</PackageProjectUrl>
     <PackageTags>console table output consoletable text-table</PackageTags>
-    <PackageReleaseNotes>- .NET 6 and .NET 7 as target frameworks
-- TableMemberConverterAttribute&lt;TConverter&gt; introduced for .NET 7 target
-- The missing XML-doc was added to the package</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added MinWidth property to [TableMember]. Use it to set the minimal width of a table column
+- Added ConstructorArgs property to [TableMemberConverter]. Use it to pass arguments to a converter constructor</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
