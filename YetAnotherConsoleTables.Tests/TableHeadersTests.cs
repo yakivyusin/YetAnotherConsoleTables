@@ -114,5 +114,17 @@ namespace YetAnotherConsoleTables.Tests
             Assert.Equal("Property3", headers.RowLines[0][2]);
             Assert.Equal("Property4", headers.RowLines[0][3]);
         }
+
+        [Fact]
+        public void MinWidthTest()
+        {
+            var collection = new[] { new MinWidth() };
+            var table = ConsoleTable.From(collection);
+
+            var headers = table.Headers;
+
+            Assert.Equal(1, headers.ColumnCount);
+            Assert.Equal("Property ", headers.RowLines[0][0]);
+        }
     }
 }

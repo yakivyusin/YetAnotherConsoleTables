@@ -14,19 +14,19 @@ namespace YetAnotherConsoleTables.Model
         internal int ColumnCount { get; private set; }
         internal IReadOnlyList<string[]> RowLines => _rowLines.AsReadOnly();
 
-        internal TableRow(string[] row)
+        internal TableRow((string value, int minWidth)[] row)
         {
             SplitRow(row);
         }
 
-        private void SplitRow(string[] row)
+        private void SplitRow((string value, int minWidth)[] row)
         {
             if (row == null)
             {
                 return;
             }
 
-            var splittedLines = row.Select(column => SplitString(column)).ToList();
+            var splittedLines = row.Select(column => PadStrings(SplitString(column.value), column.minWidth)).ToList();
             var linesCount = splittedLines.Max(column => column.Length);
 
             for (int i = 0; i < linesCount; i++)
@@ -46,5 +46,9 @@ namespace YetAnotherConsoleTables.Model
 
             return input.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         }
+
+        private string[] PadStrings(string[] strings, int minWidth) => strings
+            .Select(x => x.PadRight(minWidth))
+            .ToArray();
     }
 }

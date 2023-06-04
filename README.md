@@ -8,6 +8,7 @@ Advanced library to output your POCO collections in a table view in a console (s
     - [TableMemberAttribute](#tablememberattribute)
     - [TableIgnoreAttribute](#tableignoreattribute)
     - [TableMemberConverterAttribute](#tablememberconverterattribute)
+    - [Combined Example](#combined-example)
   - [Multi-line Data](#multi-line-data)
   - [Output Customization](#output-customization)
 
@@ -54,22 +55,31 @@ Output:
 # Advanced Features
 ## Attributes
 ### TableMemberAttribute
-Sets properties of the table member, such as display name, default value, and order.
+Sets properties of the table member, such as display name, default value, order, and min width.
 ### TableIgnoreAttribute
 Instructs the library to ignore marked public field or property.
 ### TableMemberConverterAttribute
 Instructs the library to use the specified `TableMemberConverter` when converting the member to string. You can create your own TableMemberConverter by inheriting `TableMemberConverter` or `TableMemberConverter<T>`.
 
 For .NET 7 and upper, the generic version of the attribute is available - `TableMemberConverterAttribute<TConverter>`. The non-generic version is deprecated for these platforms and will be removed because the generic attribute provides more compile-time guarantees on the type parameter.
+
+If you need to pass constructor arguments to your `TableMemberConverter`, you can specify them using the `ConstructorArgs` property of the `TableMemberConverterAttribute`. This allows you to create re-usable, configurable, common converters.
+### Combined Example
 ```
 using YetAnotherConsoleTables.Attributes;
 
 class MyConverter : TableMemberConverter<int>
 {
-  public override string Convert(int value)
-  {
-    return $"MyConverter:{value}";
-  }
+  public override string Convert(int value) => $"MyConverter:{value}";
+}
+
+class MyConverterWithParam : TableMemberConverter<int>
+{
+  private readonly string _prefix;
+
+  public MyConverterWithParam(string prefix) => _prefix = prefix;
+
+  public override string Convert(int value) => $"{_prefix}{value}";
 }
 
 class Something
@@ -79,27 +89,33 @@ class Something
   [TableMember(DisplayName = "My Integer Property")]
   [TableMemberConverter(typeof(MyConverter))]
   public int Property1 { get; set; } = rnd.Next(99, 10001);
+
   [TableIgnore]
   public string Field1 = "My String";
+
   [TableMember(Order = 1, DefaultValue = "Null Value")]
   public string Property2 { get; set; } = null;
+
+  [TableMember(MinWidth = 20)]
+  [TableMemberConverter(typeof(MyConverterWithParam), ConstructorArgs = new[] { "MyConv1:" })]
+  public int Property3 { get; set; } = rnd.Next(100, 999);
 }
 ```
 Output:
 ```
-------------------------------------
-| Property2  | My Integer Property |
-------------------------------------
-| Null Value | MyConverter:4292    |
-------------------------------------
-| Null Value | MyConverter:4697    |
-------------------------------------
-| Null Value | MyConverter:1672    |
-------------------------------------
-| Null Value | MyConverter:6317    |
-------------------------------------
-| Null Value | MyConverter:4804    |
-------------------------------------
+-----------------------------------------------------------
+| Property2  | My Integer Property | Property3            |
+-----------------------------------------------------------
+| Null Value | MyConverter:4292    | MyConv1:512          |
+-----------------------------------------------------------
+| Null Value | MyConverter:4697    | MyConv1:696          |
+-----------------------------------------------------------
+| Null Value | MyConverter:1672    | MyConv1:234          |
+-----------------------------------------------------------
+| Null Value | MyConverter:6317    | MyConv1:754          |
+-----------------------------------------------------------
+| Null Value | MyConverter:4804    | MyConv1:562          |
+-----------------------------------------------------------
 ```
 
 ## Multi-line Data

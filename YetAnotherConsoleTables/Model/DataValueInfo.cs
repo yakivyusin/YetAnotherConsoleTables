@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using YetAnotherConsoleTables.Attributes;
 
@@ -41,6 +42,8 @@ namespace YetAnotherConsoleTables.Model
 
         internal string Name => _memberAttr?.DisplayName ?? _field?.Name ?? _property.Name;
 
+        internal int MinWidth => _memberAttr?.MinWidth ?? default;
+
         internal string GetValue(object obj)
         {
             var value = _field != null ? _field.GetValue(obj) : _property.GetValue(obj);
@@ -65,10 +68,10 @@ namespace YetAnotherConsoleTables.Model
                 return;
             }
 
-            var ctor = attr.ConverterType.GetConstructor(Type.EmptyTypes);
+            var ctor = attr.ConverterType.GetConstructor(attr.ConstructorArgs.Select(x => x.GetType()).ToArray());
             if (ctor != null)
             {
-                var converter = (TableMemberConverter)ctor.Invoke(Array.Empty<object>());
+                var converter = (TableMemberConverter)ctor.Invoke(attr.ConstructorArgs);
                 if (converter.CanConvert(_field != null ? _field.FieldType : _property.PropertyType))
                 {
                     _converter = converter;

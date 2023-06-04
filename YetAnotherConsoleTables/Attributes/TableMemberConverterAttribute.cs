@@ -13,6 +13,11 @@ namespace YetAnotherConsoleTables.Attributes
     {
         internal Type ConverterType { get; }
 
+        /// <summary>
+        /// Instructs the library to use the provided objects as the converter constructor arguments. Types of the objects must match types of the constructor parameters.
+        /// </summary>
+        public object[] ConstructorArgs { get; set; } = Array.Empty<object>();
+
         public TableMemberConverterAttribute(Type converterType) => ConverterType = converterType;
     }
 

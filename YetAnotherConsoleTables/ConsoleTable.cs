@@ -44,13 +44,13 @@ namespace YetAnotherConsoleTables
                 throw new InvalidOperationException("Class doesn't contain info.");
             }
 
-            var table = new ConsoleTable(new TableRow(members.Select(x => x.Name).ToArray()));
+            var table = new ConsoleTable(new TableRow(members.Select(x => (x.Name, x.MinWidth)).ToArray()));
 
             foreach (var item in collection)
             {
                 if (item != null)
                 {
-                    var rowItems = members.Select(x => x.GetValue(item)).ToArray();
+                    var rowItems = members.Select(x => (x.GetValue(item), x.MinWidth)).ToArray();
                     table.AddRow(new TableRow(rowItems));
                 }
             }

@@ -69,7 +69,29 @@ namespace YetAnotherConsoleTables.Tests
         [Fact]
         public void NoParamlessCtorTest()
         {
-            var data = new[] { new NoParamlessCtorConverter() };
+            var data = new[] { new NoParamlessCtorConverter.WithoutParam() };
+            var table = ConsoleTable.From(data);
+
+            var row = table.Rows[0];
+
+            Assert.Equal("A", row.RowLines[0][0]);
+        }
+
+        [Fact]
+        public void NoParamlessCtorWithParamTest()
+        {
+            var data = new[] { new NoParamlessCtorConverter.WithParam() };
+            var table = ConsoleTable.From(data);
+
+            var row = table.Rows[0];
+
+            Assert.Equal("MyConverter:A:5", row.RowLines[0][0]);
+        }
+
+        [Fact]
+        public void NoParamlessCtorWithParamOfWrongTypeTest()
+        {
+            var data = new[] { new NoParamlessCtorConverter.WithParamOfWrongType() };
             var table = ConsoleTable.From(data);
 
             var row = table.Rows[0];

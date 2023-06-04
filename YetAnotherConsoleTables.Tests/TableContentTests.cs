@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Xunit;
 using YetAnotherConsoleTables.Tests.TestClasses;
 
@@ -85,6 +86,43 @@ namespace YetAnotherConsoleTables.Tests
 
             Assert.Equal(1, content.Count);
             Assert.Equal("", content[0].RowLines[0][2]);
+        }
+
+        [Fact]
+        public void MinWidthAttrTest()
+        {
+            var collection = new List<MinWidth>
+            {
+                new MinWidth { Property = null },
+                new MinWidth { Property = "5 < 9" },
+                new MinWidth { Property = "9nine = 9" },
+                new MinWidth { Property = "1thirteen > 9" }
+            };
+
+            var table = ConsoleTable.From(collection);
+            var content = table.Rows;
+
+            Assert.Equal(4, content.Count);
+            Assert.Equal("         ", content[0].RowLines[0][0]);
+            Assert.Equal("5 < 9    ", content[1].RowLines[0][0]);
+            Assert.Equal("9nine = 9", content[2].RowLines[0][0]);
+            Assert.Equal("1thirteen > 9", content[3].RowLines[0][0]);
+        }
+
+        [Fact]
+        public void MinWidthAttrMultilineTest()
+        {
+            var collection = new List<MinWidth>
+            {
+                new MinWidth { Property = $"5 < 9{Environment.NewLine}11 > 9" }
+            };
+
+            var table = ConsoleTable.From(collection);
+            var content = table.Rows;
+
+            Assert.Equal(1, content.Count);
+            Assert.Equal("5 < 9    ", content[0].RowLines[0][0]);
+            Assert.Equal("11 > 9   ", content[0].RowLines[1][0]);
         }
     }
 }
