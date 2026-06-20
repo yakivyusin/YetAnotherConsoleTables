@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="YetAnotherConsoleTables.Tests/YetAnotherConsoleTables.Tests.csproj" />
+  <Project Path="YetAnotherConsoleTables/YetAnotherConsoleTables.csproj" />
+</Solution>
