@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -53,6 +54,40 @@ namespace YetAnotherConsoleTables
                     var rowItems = members.Select(x => (x.GetValue(item), x.MinWidth)).ToArray();
                     table.AddRow(new TableRow(rowItems));
                 }
+            }
+
+            return table;
+        }
+
+        /// <summary>
+        /// Creates ConsoleTable object from passed <paramref name="dataTable"/>.
+        /// </summary>
+        /// <param name="dataTable">Data to output.</param>
+        /// <returns>Created ConsoleTable object.</returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="dataTable"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Throws when <paramref name="dataTable"/> doesn't contain data to output.</exception>
+        public static ConsoleTable From(DataTable dataTable)
+        {
+            if (dataTable == null)
+            {
+                throw new ArgumentNullException(nameof(dataTable));
+            }
+
+            if (dataTable.Columns.Count == 0)
+            {
+                throw new InvalidOperationException("DataTable doesn't contain info.");
+            }
+
+            var table = new ConsoleTable(new TableRow(dataTable
+                .Columns
+                .OfType<DataColumn>()
+                .Select(x => (x.ColumnName, 0))
+                .ToArray()));
+
+            foreach (var row in dataTable.Rows.OfType<DataRow>())
+            {
+                var rowItems = row.ItemArray.Select(x => (x?.ToString(), 0)).ToArray();
+                table.AddRow(new TableRow(rowItems));
             }
 
             return table;
