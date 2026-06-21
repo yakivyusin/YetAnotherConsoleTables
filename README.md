@@ -11,6 +11,7 @@ Advanced library to output your POCO collections in a table view in a console (s
     - [Combined Example](#combined-example)
   - [Multi-line Data](#multi-line-data)
   - [Output Customization](#output-customization)
+  - [DataTable Support](#datatable-support)
 
 # Getting started (basic)
 Install the package:
@@ -226,4 +227,26 @@ class MyFormat : ConsoleTableFormat
  7180      : My String 
 -----------+-----------
  6146      : My String 
+```
+
+## DataTable support
+You can also pass a `DataTable` instance instead of collection of objects:
+```
+var dataTable = new DataTable();
+dataTable.Columns.Add("Property1");
+dataTable.Columns.Add("Property2");
+dataTable.Rows.Add(new object[] { "A", 3 });
+dataTable.Rows.Add(new object[] { "B", 4 });
+
+ConsoleTable.From(dataTable).Write();
+```
+Output:
+```
+----------------------------
+| Property1 | Property2    |
+----------------------------
+| A         | 3            |
+----------------------------
+| B         | 4            |
+----------------------------
 ```

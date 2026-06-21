@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Xunit;
 using YetAnotherConsoleTables.Tests.TestClasses;
 
@@ -125,6 +126,21 @@ namespace YetAnotherConsoleTables.Tests
 
             Assert.Equal(1, headers.ColumnCount);
             Assert.Equal("Property ", headers.RowLines[0][0]);
+        }
+
+        [Fact]
+        public void DataTableTest()
+        {
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("Property1");
+            dataTable.Columns.Add("Property2");
+
+            var table = ConsoleTable.From(dataTable);
+            var headers = table.Headers;
+
+            Assert.Equal(2, headers.ColumnCount);
+            Assert.Equal("Property1", headers.RowLines[0][0]);
+            Assert.Equal("Property2", headers.RowLines[0][1]);
         }
     }
 }

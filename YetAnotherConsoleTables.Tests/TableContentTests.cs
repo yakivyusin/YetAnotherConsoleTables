@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Xunit;
 using YetAnotherConsoleTables.Tests.TestClasses;
 
@@ -123,6 +124,25 @@ namespace YetAnotherConsoleTables.Tests
             Assert.Equal(1, content.Count);
             Assert.Equal("5 < 9    ", content[0].RowLines[0][0]);
             Assert.Equal("11 > 9   ", content[0].RowLines[1][0]);
+        }
+
+        [Fact]
+        public void DataTableTest()
+        {
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("Property1");
+            dataTable.Columns.Add("Property2");
+            dataTable.Rows.Add(new object[] { "A", 3 });
+            dataTable.Rows.Add(new object[] { "B", 4 });
+
+            var table = ConsoleTable.From(dataTable);
+            var content = table.Rows;
+
+            Assert.Equal(2, content.Count);
+            Assert.Equal("A", content[0].RowLines[0][0]);
+            Assert.Equal("3", content[0].RowLines[0][1]);
+            Assert.Equal("B", content[1].RowLines[0][0]);
+            Assert.Equal("4", content[1].RowLines[0][1]);
         }
     }
 }
